@@ -1,0 +1,448 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#content {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 250px 1fr;
+}
+
+#body {
+    z-index: 1;
+    height: 100vh;
+    width: 100%;
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: center;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    background-color: rgb(235, 235, 235);
+}
+
+/* ------------Body ------------ */
+
+.taskbox {
+    justify-self: center;
+    align-self: center;
+    height: 80vh;
+    width: 90%;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px 1fr;
+}
+
+.taskheader {
+    height: 100%;
+    width: 100%;
+    background-color: #577399;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.tasktitle {
+    font-size: 30px;
+    font-weight: bold;
+    color: ivory;
+    font-family: 'Roboto', sans-serif;
+    padding-left: 15px;
+}
+
+.customitem {
+    align-self: center;
+    justify-self: center;
+    font-size: 30px;
+    padding: 5px;
+    background-color: #fc9e4c;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+.customitem:hover {
+    transition: 150ms;
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+/* Table */
+
+.taskbody {
+    height: 100%;
+    width: 100%;
+    background-color: ivory;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 35px min-content 50px;
+}
+
+.taskcolumns {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 75px 1fr 150px 100px 150px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    align-self: center;
+    background-color: ivory;
+    height: 100%;
+    width: 100%;
+}
+
+.taskcolumn {
+    align-self: center;
+}
+
+.justifycenter {
+    justify-self: center;
+}
+
+.justifystart {
+    justify-self: start;
+    padding-left: 15px;
+}
+
+.taskdetail.justifystart {
+    padding-left: 17px;
+}
+
+.tasklist {
+    max-height: 65vh;
+    width: 100%;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 35px;
+    row-gap: 10px;
+    overflow-y: overlay;
+}
+
+.tasklist::-webkit-scrollbar {
+    width: .5vw;
+    position: absolute;
+}
+
+.tasklist::-webkit-scrollbar-thumb {
+    background-color: #fc9e4c;
+}
+
+.tasklist::-webkit-scrollbar-track {
+    background-color: #fffff0;
+}
+
+.taskitem {
+    display: grid;
+    grid-template-columns: 75px 1fr 150px 100px 150px;
+    grid-template-rows: 1fr;
+    background-color: #e2e2e2;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: black;
+}
+
+.taskdetail {
+    align-self: center;
+}
+
+.actionsicons {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.actionsicons > img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: 150ms;
+}
+
+/* ------------ Sidebar ------------ */
+
+#sidebar {
+    grid-area: 1 / 1 / 2 / 2;
+    width: 250px;
+    height: 100vh;
+    background-color: #577399;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 100px 1fr 200px;
+}
+
+#sideheader {
+    align-self: center;
+    justify-self: center;
+    font-family: 'Lilita One', cursive;
+    color: ivory;
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 1px solid ivory;
+}
+
+#sidebody {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 140px min-content 39px;
+}
+
+#menuitems {
+    max-height: 200px;
+    overflow-y: overlay;
+}
+
+#menuitems::-webkit-scrollbar {
+    width: .5vw;
+    position: absolute;
+}
+
+#menuitems::-webkit-scrollbar-thumb {
+    background-color: #fc9e4c;
+}
+
+#menuitems::-webkit-scrollbar-track {
+    background-color: #fffff0;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 50px;
+}
+
+#menuform {
+    padding: 10px;
+    background-color: ivory;
+    width: 182.16px;
+    font-family: 'Roboto', sans-serif;
+    align-self: flex-start;
+    justify-self: center;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr min-content;
+    grid-gap: 10px;
+}
+
+#menuformtitle {
+    width: 100%;
+}
+
+#menuformicons {
+    display: flex;
+}
+
+#menuformicons > img:hover {
+    transform: scale(1.2);
+    transition: 150ms;
+    cursor: pointer;
+ }
+
+.menuitem {
+    padding: 10px;
+    background-color: ivory;
+    width: 182.16px;
+    font-family: 'Roboto', sans-serif;
+    align-self: flex-start;
+    justify-self: center;
+}
+
+.menuedit {
+    display: grid;
+    grid-template-columns: 1fr min-content min-content;
+    grid-template-rows: 1fr;
+}
+
+.menuedit > img:hover {
+    transform: scale(1.2);
+    transition: 150ms;
+    cursor: pointer;
+}
+
+.menuitem:hover {
+    transform: scale(1.1);
+    transition: 150ms;
+    cursor: pointer;
+}
+
+.activemenu {
+    background-color: #fc9e4c;
+}
+
+#custommenu {
+    padding: 10px;
+    width: 182.16px;
+    font-family: 'Roboto', sans-serif;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    outline: 1px dotted ivory;
+    outline-offset: -1px;
+    background-color: rgba(255, 255, 240, 0.425);
+}
+
+#custommenu:hover {
+    transition: 150ms;
+    cursor: pointer;
+    background-color: ivory;
+}
+
+/* ------------ Calendar ------------ */
+
+#sidebottom {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+}
+
+#todaysdate {
+    align-self: center;
+    justify-self: center;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: 150px;
+    grid-template-rows: 50px 60px 40px;
+    box-shadow: 5px 5px 5px rgb(51, 51, 51);
+}
+
+#monthofyear {
+    grid-area: 1 / 1 / 2 / 2;
+    background-color: #fc9e4c;
+    color: ivory;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px 6px 0px 0px;
+}
+
+#dayofmonth {
+    grid-area: 2 / 1 / 3 / 2;
+    background-color: ivory;
+    color: black;
+    font-family: 'Anton', sans-serif;
+    font-size: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dayofweek {
+    grid-area: 3 / 1 / 4 / 2;
+    background-color: ivory;
+    color: #fc9e4c;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 0px 6px 6px;
+}
+
+#verifydeletecontainer {
+    z-index: 2;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(128, 128, 128, 0.466);
+}
+
+#verifydelete {
+    position: absolute;
+    height: 175px;
+    width: 350px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    font-family: 'Roboto', sans-serif;
+}
+
+#verifydeletetop {
+    display: grid;
+    row-gap: 5px;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+#warningicon {
+    grid-area: 1 / 1 / 3 / 2;
+    align-self: center;
+    justify-self: center;
+}
+
+#warningitem {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: flex-end;
+    justify-self: flex-start;
+}
+
+#warningmessage {
+    grid-area: 2 / 2 / 3 / 3;
+    align-self: flex-start;
+    justify-self: flex-start;
+}
+
+#verifydeletebottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.verifydeletebutton {
+    border: 1px solid black;
+    text-decoration: none;
+    display: inline-block;
+    padding: 15px 32px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#deletebutton {
+    background-color: #fc9e4c;
+}
+
+.verifydeletebutton:hover {
+    transform: scale(1.1);
+    transition: 150ms;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.disabled {
+    pointer-events: none !important;
+}
+
+.disabled:hover {
+    cursor: not-allowed !important;
+    transform: scale(1.0) !important;
+}
+
+
+
+/* font-family: 'Anton', sans-serif;
+font-family: 'Lilita One', cursive;
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Condensed', sans-serif; */
