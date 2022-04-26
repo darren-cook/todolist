@@ -20,15 +20,15 @@
             </div>
             <div id="sidebody">
                 <div id="menudefaults" class="menu">
-                    <div id="menu-alltasks" class="menuitem activemenu disableable" data-pair="#body-alltasks">
+                    <div id="menu-alltasks" class="menuitem activemenu disableable" data-name="alltasks" data-pair="#body-alltasks">
                         <div>All Tasks</div>
                     </div>
-                    <div id="menu-completedtasks" class="menuitem disableable" data-pair="#body-completedtasks">
+                    <div id="menu-completedtasks" class="menuitem disableable" data-name="completedtasks" data-pair="#body-completedtasks">
                         <div>Completed Tasks</div>
                     </div>
                 </div>
                 <div id="menuitems" class="menu">
-                    <div id="menu-generaltasks" class="menuitem disableable" data-pair="#body-generaltasks">
+                    <div id="menu-generaltasks" class="menuitem disableable" data-name="generaltasks" data-pair="#body-generaltasks">
                         <div>General Tasks</div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="customitem disableable">+</div>
+                    <img class="customitem disableable" src="./images/plus-circle.png" alt="Add Task Icon">
                 </div>
             </div>
             <div id="body-completedtasks" class="taskbox hidden">
@@ -76,23 +76,21 @@
                         <div class="taskcolumn justifycenter">Priority</div>
                         <div class="taskcolumn justifystart">Title</div>
                         <div class="taskcolumn justifystart">Task List</div>
-                        <div class="taskcolumn justifycenter">Due Date</div>
+                        <div class="taskcolumn justifycenter">Completed</div>
                         <div class="taskcolumn justifycenter">Actions</div>
                     </div>
                     <div class="tasklist">
                         <div class="taskitem">
                             <div class="taskdetail justifycenter">Low</div>
-                            <div class="taskdetail justifystart">Completed Test</div>
+                            <div class="taskdetail justifystart">Date Completed</div>
                             <div class="taskdetail justifystart">General</div>
                             <div class="taskdetail justifycenter">April 23</div>
                             <div class="taskdetail justifycenter actionsicons">
                                 <img class="disableable" src="./images/pencil.png" alt="Edit Icon">
-                                <img class="disableable" src="./images/check.png" alt="Complete Icon">
                                 <img class="disableable" src="./images/delete.png" alt="Delete Icon">
                             </div>
                         </div>
                     </div>
-                    <div class="customitem disableable">+</div>
                 </div>
             </div>
             <div id="body-generaltasks" class="taskbox hidden">
@@ -120,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="customitem disableable">+</div>
+                    <img class="customitem disableable" src="./images/plus-circle.png" alt="Add Task Icon">
                 </div>
             </div>
         </div>

@@ -52,9 +52,10 @@ function generateTaskBox(bodyTitle){
 
     taskBody.appendChild(taskList);
 
-    const customItem = document.createElement("div");
+    const customItem = document.createElement("img");
+    customItem.setAttribute("src","./images/plus-circle.png");
+    customItem.setAttribute("alt","Add Task Icon");
     customItem.classList.add("customitem","disableable");
-    customItem.textContent = "+";
 
     taskBody.appendChild(customItem);
 
@@ -64,33 +65,3 @@ function generateTaskBox(bodyTitle){
 }
 
 export { generateTaskBox }
-
-
-            // <div id="generaltasks" class="taskbox hidden">
-            //     <div class="taskheader">
-            //         <div class="tasktitle">General Tasks</div>
-            //     </div>
-            //     <div class="taskbody">
-            //         <div class="taskcolumns">
-            //             <div class="taskcolumn justifycenter">Priority</div>
-            //             <div class="taskcolumn justifystart">Title</div>
-            //             <div class="taskcolumn justifystart">Task List</div>
-            //             <div class="taskcolumn justifycenter">Due Date</div>
-            //             <div class="taskcolumn justifycenter">Actions</div>
-            //         </div>
-            //         <div class="tasklist">
-            //             <div class="taskitem">
-            //                 <div class="taskdetail justifycenter">Low</div>
-            //                 <div class="taskdetail justifystart">General Test</div>
-            //                 <div class="taskdetail justifystart">General</div>
-            //                 <div class="taskdetail justifycenter">April 23</div>
-            //                 <div class="taskdetail justifycenter actionsicons">
-            //                     <img class="disableable" src="./images/pencil.png" alt="Edit Icon">
-            //                     <img class="disableable" src="./images/check.png" alt="Complete Icon">
-            //                     <img class="disableable" src="./images/delete.png" alt="Delete Icon">
-            //                 </div>
-            //             </div>
-            //         </div>
-            //         <div class="customitem disableable">+</div>
-            //     </div>
-            // </div>

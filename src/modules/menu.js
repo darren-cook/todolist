@@ -1,5 +1,6 @@
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
 import { generateTaskBox } from "./body";
+import { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage } from "./localstorage";
 
 function changeMenu(menuItem){
     const activeMenu = document.querySelector(".activemenu");
@@ -97,6 +98,7 @@ function validateMenu(){
 
         resetMenu();
         generateTaskBox(newMenu.title);
+        addMenuToLocalStorage(newMenu);
         changeMenu(generatedMenu);
     } else {
         menuFormTitle.focus();
@@ -107,14 +109,17 @@ const menuFactory = (menuTitle) => {
     const title = menuTitle;
     const classes = ["menuitem","menuedit","disableable"];
     const pair = `#body-${menuTitle}`;
+    const name = menuTitle;
 
-    return {title, classes, pair};
+    return {title, classes, pair, name};
 }
 
-function generateMenu(title, classes, pair){
+function generateMenu(title, classes, pair, name){
     const menuContainer = document.createElement("div");
     menuContainer.setAttribute("id",`menu-${title}`);
     menuContainer.setAttribute("data-pair", pair);
+    menuContainer.setAttribute("data-name",name);
+    menuContainer.setAttribute("data-name",title);
     classes.forEach(classItem=>{
         menuContainer.classList.add(classItem)
     })
@@ -185,6 +190,7 @@ function validateMenuEdit(oldMenu, oldMenuContent, newMenuName){
     const menuFormTitle = document.querySelector("#menuformtitle");
 
     if (menuFormTitle.checkValidity()===true) {
+        editMenuInLocalStorage(oldMenuContent.textContent, newMenuName);
         const oldBody = document.querySelector(`#body-${oldMenuContent.textContent}`);
         oldBody.id = `body-${newMenuName}`;
         const oldBodyTitle = document.querySelector(`#body-${oldMenuContent.textContent}-title`);
@@ -192,6 +198,7 @@ function validateMenuEdit(oldMenu, oldMenuContent, newMenuName){
         oldBodyTitle.textContent = newMenuName;
         oldMenu.id = `menu-${newMenuName}`;
         oldMenu.dataset.pair = `#body-${newMenuName}`;
+        oldMenu.dataset.name = newMenuName;
         oldMenuContent.textContent = newMenuName;
         oldMenuContent.id = `menu-${newMenuName}-content`;
         resetMenu();
@@ -218,6 +225,8 @@ function verifyDelete(menuToDelete) {
 
 function deleteMenu(menuToDelete) {
     const bodyToDelete = document.querySelector(menuToDelete.dataset.pair);
+    console.log(menuToDelete.dataset.name);
+    removeMenuInLocalStorage(menuToDelete.dataset.name);
     menuToDelete.remove();
     bodyToDelete.remove();
 }
