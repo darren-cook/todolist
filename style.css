@@ -57,16 +57,6 @@
 .customitem {
     align-self: center;
     justify-self: center;
-    font-size: 30px;
-    padding: 5px;
-    background-color: #fc9e4c;
-    border-radius: 50%;
-    height: 25px;
-    width: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: black;
 }
 
 .customitem:hover {
