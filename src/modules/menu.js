@@ -225,7 +225,6 @@ function verifyDelete(menuToDelete) {
 
 function deleteMenu(menuToDelete) {
     const bodyToDelete = document.querySelector(menuToDelete.dataset.pair);
-    console.log(menuToDelete.dataset.name);
     removeMenuInLocalStorage(menuToDelete.dataset.name);
     menuToDelete.remove();
     bodyToDelete.remove();

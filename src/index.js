@@ -1,5 +1,5 @@
 import { loadInitial } from "./modules/initial";
-import { changeMenu, createMenu } from "./modules/menu"
+import { changeMenu, createMenu } from "./modules/menu";
 
 loadInitial();
 

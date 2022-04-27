@@ -1,27 +1,38 @@
-
-function addMenuToLocalStorage(menuItem) {
-    const menuItemObject = {menuObject:menuItem, menuTaskList:[]}
-    sessionStorage.setItem(menuItem.title, JSON.stringify(menuItemObject));
-    console.log(JSON.parse(sessionStorage.getItem(menuItem.title)).menuObject.title);
-    console.log(JSON.parse(sessionStorage.getItem(menuItem.title)).menuTaskList);
+function createSessionStorage(){
+    const userDataList = []
+    sessionStorage.setItem("userData",JSON.stringify(userDataList));
 }
 
-function editMenuInLocalStorage(oldMenuTitle, newMenuTitle) {
-    const oldMenuObject = JSON.parse(sessionStorage.getItem(oldMenuTitle)).menuObject;
-    oldMenuObject.title = newMenuTitle;
-    oldMenuObject.pair = `#body-${newMenuTitle}`;
-    const oldMenuTaskList = JSON.parse(sessionStorage.getItem(oldMenuTitle)).menuTaskList;
+function addMenuToLocalStorage(menuItem) {
+    const dataToAppend = {menuTitle:menuItem.title, menuObject:menuItem, taskList:[]};
 
-    const newMenuObject = {menuObject:oldMenuObject, menuTaskList:oldMenuTaskList};
-
-    sessionStorage.setItem(newMenuTitle, JSON.stringify(newMenuObject));
-
-    removeMenuInLocalStorage(oldMenuTitle);
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+    
+    userDataList.push(dataToAppend);
+    sessionStorage.setItem("userData",JSON.stringify(userDataList));
 }
 
 function removeMenuInLocalStorage(menuToRemove){
-    console.log(menuToRemove);
-    sessionStorage.removeItem(menuToRemove);
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+
+    const newUserDataList = userDataList.filter(function( obj ) {
+        return obj.menuTitle !== menuToRemove;
+    })
+
+    sessionStorage.setItem("userData",JSON.stringify(newUserDataList));
 }
 
-export { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage }
+function editMenuInLocalStorage(oldMenuTitle, newMenuTitle) {
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+
+    const menuToEdit = userDataList.find(x => x.menuTitle==oldMenuTitle);
+
+    menuToEdit.menuTitle = newMenuTitle;
+    menuToEdit.menuObject.title = newMenuTitle;
+    menuToEdit.menuObject.name = newMenuTitle;
+    menuToEdit.menuObject.pair = `#body-${newMenuTitle}`;
+
+    sessionStorage.setItem("userData",JSON.stringify(userDataList));
+}
+
+export { createSessionStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage }

@@ -1,7 +1,9 @@
 import { format } from "date-fns";
+import { createSessionStorage } from "./localstorage";
 
 function loadInitial() {
     generateCalendar();
+    createSessionStorage();
 }
 
 function generateCalendar() {
