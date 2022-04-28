@@ -1,7 +1,9 @@
 import { format } from "date-fns";
 import { checkLocalStorage } from "./localstorage";
+import { generateTaskBox } from "./body";
 
 function loadInitial() {
+    generateTaskBox("All Tasks");
     generateCalendar();
     checkLocalStorage();
 }

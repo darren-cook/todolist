@@ -47,7 +47,6 @@ function editMenuInLocalStorage(oldMenuTitle, newMenuTitle) {
 
     menuToEdit.menuTitle = newMenuTitle;
     menuToEdit.menuObject.title = newMenuTitle;
-    menuToEdit.menuObject.name = newMenuTitle;
     menuToEdit.menuObject.pair = `body-${newMenuTitle}`;
 
     sessionStorage.setItem("userData",JSON.stringify(userDataList));

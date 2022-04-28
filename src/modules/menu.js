@@ -2,23 +2,19 @@ import { disableDisableables, enableDisableables, displayVerifyWindow, removeVer
 import { generateTaskBox } from "./body";
 import { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage } from "./localstorage";
 
-function changeMenu(menuItem){
-    const activeMenu = document.querySelector(".activemenu");
+function changeMenu(newMenuElement){
+    const oldMenuElement = document.querySelector(".activemenu");
 
-    activeMenu.classList.remove("activemenu");
-    menuItem.classList.add("activemenu");
+    oldMenuElement.classList.remove("activemenu");
+    newMenuElement.classList.add("activemenu");
 
-    changeBody(menuItem.dataset.pair);
+    changeBody(newMenuElement.dataset.title);
 }
 
-function changeBody(menuItemPair){
-    const activeBody = document.querySelector(".activebody");
-    const newActiveBody = document.getElementById(menuItemPair);
-
-    activeBody.classList.add("hidden");
-    activeBody.classList.remove("activebody");
-    newActiveBody.classList.add("activebody");
-    newActiveBody.classList.remove("hidden");
+function changeBody(newBodyTitle){
+    const oldBodyElement = document.querySelector(".activebody");
+    oldBodyElement.remove();
+    generateTaskBox(newBodyTitle);
 }
 
 function createMenuForm(placeholder="New Task List") {
@@ -97,7 +93,6 @@ function validateMenu(){
         menuItems.insertBefore(generatedMenu, menuForm);
 
         resetMenu();
-        generateTaskBox(newMenu.title);
         addMenuToLocalStorage(newMenu);
         changeMenu(generatedMenu);
     } else {
@@ -109,22 +104,19 @@ const menuFactory = (menuTitle) => {
     const title = menuTitle;
     const classes = ["menuitem","menuedit","disableable"];
     const pair = `body-${menuTitle}`;
-    const name = menuTitle;
 
-    return {title, classes, pair, name};
+    return {title, classes, pair};
 }
 
 function generateMenu(menuObject){
     const title = menuObject.title;
     const pair = menuObject.pair;
     const classes = menuObject.classes;
-    const name = menuObject.name;
 
     const menuContainer = document.createElement("div");
     menuContainer.setAttribute("id",`menu-${title}`);
     menuContainer.setAttribute("data-pair", pair);
-    menuContainer.setAttribute("data-name",name);
-    menuContainer.setAttribute("data-name",title);
+    menuContainer.setAttribute("data-title", title);
     classes.forEach(classItem=>{
         menuContainer.classList.add(classItem)
     })
@@ -212,8 +204,8 @@ function validateMenuEdit(oldMenu, oldMenuContent, newMenuName){
     }
 }
 
-function verifyDelete(menuToDelete) {
-    displayVerifyWindow(menuToDelete);
+function verifyDelete(menuElementToDelete) {
+    displayVerifyWindow(menuElementToDelete);
     const cancelButton = document.querySelector("#cancelbutton");
     const deleteButton = document.querySelector("#deletebutton");
 
@@ -223,16 +215,16 @@ function verifyDelete(menuToDelete) {
     deleteButton.addEventListener("click",function(){
         const allTasksMenu = document.querySelector("#menu-alltasks");
         changeMenu(allTasksMenu)
-        deleteMenu(menuToDelete);
+        deleteMenu(menuElementToDelete);
         removeVerifyWindow();
     })
 }
 
-function deleteMenu(menuToDelete) {
-    const bodyToDelete = document.getElementById(menuToDelete.dataset.pair);
-    removeMenuInLocalStorage(menuToDelete.dataset.name);
-    menuToDelete.remove();
-    bodyToDelete.remove();
+function deleteMenu(menuElementToDelete) {
+    // const bodyElementToDelete = document.getElementById(menuElementToDelete.dataset.pair);
+    // need to remove from local storage
+    removeMenuInLocalStorage(menuElementToDelete.dataset.title);
+    menuElementToDelete.remove();
 }
 
 function resetMenu() {
