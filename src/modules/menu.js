@@ -13,7 +13,7 @@ function changeMenu(menuItem){
 
 function changeBody(menuItemPair){
     const activeBody = document.querySelector(".activebody");
-    const newActiveBody = document.querySelector(menuItemPair);
+    const newActiveBody = document.getElementById(menuItemPair);
 
     activeBody.classList.add("hidden");
     activeBody.classList.remove("activebody");
@@ -90,7 +90,7 @@ function validateMenu(){
 
     if (menuFormTitle.checkValidity()===true) {
         const newMenu = menuFactory(menuFormTitle.value);
-        const generatedMenu = generateMenu(newMenu.title, newMenu.classes, newMenu.pair);
+        const generatedMenu = generateMenu(newMenu);
 
         const menuItems = document.querySelector("#menuitems");
         const menuForm = document.querySelector("#menuform");
@@ -108,13 +108,18 @@ function validateMenu(){
 const menuFactory = (menuTitle) => {
     const title = menuTitle;
     const classes = ["menuitem","menuedit","disableable"];
-    const pair = `#body-${menuTitle}`;
+    const pair = `body-${menuTitle}`;
     const name = menuTitle;
 
     return {title, classes, pair, name};
 }
 
-function generateMenu(title, classes, pair, name){
+function generateMenu(menuObject){
+    const title = menuObject.title;
+    const pair = menuObject.pair;
+    const classes = menuObject.classes;
+    const name = menuObject.name;
+
     const menuContainer = document.createElement("div");
     menuContainer.setAttribute("id",`menu-${title}`);
     menuContainer.setAttribute("data-pair", pair);
@@ -197,7 +202,7 @@ function validateMenuEdit(oldMenu, oldMenuContent, newMenuName){
         oldBodyTitle.id = `body-${newMenuName}-title`;
         oldBodyTitle.textContent = newMenuName;
         oldMenu.id = `menu-${newMenuName}`;
-        oldMenu.dataset.pair = `#body-${newMenuName}`;
+        oldMenu.dataset.pair = `body-${newMenuName}`;
         oldMenu.dataset.name = newMenuName;
         oldMenuContent.textContent = newMenuName;
         oldMenuContent.id = `menu-${newMenuName}-content`;
@@ -224,7 +229,7 @@ function verifyDelete(menuToDelete) {
 }
 
 function deleteMenu(menuToDelete) {
-    const bodyToDelete = document.querySelector(menuToDelete.dataset.pair);
+    const bodyToDelete = document.getElementById(menuToDelete.dataset.pair);
     removeMenuInLocalStorage(menuToDelete.dataset.name);
     menuToDelete.remove();
     bodyToDelete.remove();
@@ -240,4 +245,4 @@ function resetMenu() {
     customMenu.classList.remove("hidden")
 }
 
-export { changeMenu, createMenu}
+export { changeMenu, createMenu, menuFactory, generateMenu }

@@ -1,6 +1,24 @@
-function createSessionStorage(){
+import { menuFactory, generateMenu } from "./menu";
+
+function checkLocalStorage(){
+    if(sessionStorage.length == 0){
+        createLocalStorage();
+    } else {
+        loadMenusFromLocalStorage();
+    }
+}
+
+function createLocalStorage(){
     const userDataList = []
     sessionStorage.setItem("userData",JSON.stringify(userDataList));
+
+    const allTasks = menuFactory("All Tasks");
+    const completedTasks = menuFactory("Completed Tasks");
+    const generalTasks = menuFactory("General Tasks");
+    addMenuToLocalStorage(allTasks);
+    addMenuToLocalStorage(completedTasks);
+    addMenuToLocalStorage(generalTasks);
+
 }
 
 function addMenuToLocalStorage(menuItem) {
@@ -30,9 +48,20 @@ function editMenuInLocalStorage(oldMenuTitle, newMenuTitle) {
     menuToEdit.menuTitle = newMenuTitle;
     menuToEdit.menuObject.title = newMenuTitle;
     menuToEdit.menuObject.name = newMenuTitle;
-    menuToEdit.menuObject.pair = `#body-${newMenuTitle}`;
+    menuToEdit.menuObject.pair = `body-${newMenuTitle}`;
 
     sessionStorage.setItem("userData",JSON.stringify(userDataList));
 }
 
-export { createSessionStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage }
+function loadMenusFromLocalStorage(){
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+    
+    for(let i=3; i<userDataList.length; i++){
+        const generatedMenu = generateMenu(userDataList[i].menuObject);
+        const menuItems = document.querySelector("#menuitems");
+        const menuForm = document.querySelector("#menuform");
+        menuItems.insertBefore(generatedMenu, menuForm);
+    }
+}
+
+export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage }
