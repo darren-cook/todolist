@@ -54,12 +54,12 @@
     padding-left: 15px;
 }
 
-.customitem {
+.customtask {
     align-self: center;
     justify-self: center;
 }
 
-.customitem:hover {
+.customtask:hover {
     transition: 150ms;
     cursor: pointer;
     transform: scale(1.1);
@@ -156,6 +156,14 @@
     transform: scale(1.1);
     cursor: pointer;
     transition: 150ms;
+}
+
+#taskform {
+    display: grid;
+    grid-template-columns: 75px 1fr 150px 150px 150px;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    padding: 5px;
 }
 
 /* ------------ Sidebar ------------ */

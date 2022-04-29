@@ -22,7 +22,7 @@ function createMenuForm(placeholder="New Task List") {
     menuFormContainer.setAttribute("id","menuform");
 
     const menuForm = document.createElement("form");
-    menuForm.setAttribute("onsubmit","return false");
+    menuForm.setAttribute("onSubmit","return false");
 
     const menuInput = document.createElement("input");
     menuInput.setAttribute("type","text");
@@ -61,9 +61,11 @@ function createMenuForm(placeholder="New Task List") {
 
 function createMenu() {
     disableDisableables();
+
     const menuitems = document.querySelector("#menuitems");
     const newMenuForm = createMenuForm();
     menuitems.appendChild(newMenuForm);
+
     const newMenuTitle = document.querySelector("#menuformtitle");
     newMenuTitle.focus();
 
@@ -85,16 +87,16 @@ function validateMenu(){
     const menuFormTitle = document.querySelector("#menuformtitle");
 
     if (menuFormTitle.checkValidity()===true) {
-        const newMenu = menuFactory(menuFormTitle.value);
-        const generatedMenu = generateMenu(newMenu);
+        const newMenuObject = menuFactory(menuFormTitle.value);
+        const newMenuElement = generateMenuElement(newMenuObject);
 
         const menuItems = document.querySelector("#menuitems");
         const menuForm = document.querySelector("#menuform");
-        menuItems.insertBefore(generatedMenu, menuForm);
+        menuItems.insertBefore(newMenuElement, menuForm);
 
         resetMenu();
-        addMenuToLocalStorage(newMenu);
-        changeMenu(generatedMenu);
+        addMenuToLocalStorage(newMenuObject);
+        changeMenu(newMenuElement);
     } else {
         menuFormTitle.focus();
     }
@@ -108,7 +110,7 @@ const menuFactory = (menuTitle) => {
     return {title, classes, pair};
 }
 
-function generateMenu(menuObject){
+function generateMenuElement(menuObject){
     const title = menuObject.title;
     const pair = menuObject.pair;
     const classes = menuObject.classes;
@@ -132,14 +134,14 @@ function generateMenu(menuObject){
     const deleteIcon = document.createElement("img");
     editIcon.src="./images/pencil.png";
     editIcon.alt="Edit Icon";
-    editIcon.classList.add("editicon");
+    // editIcon.classList.add("editicon");
     editIcon.classList.add("disableable");
     editIcon.addEventListener("click",function(){
         createMenuEdit(editIcon.parentElement.id)
     })
     deleteIcon.src="./images/delete.png";
     deleteIcon.alt="Delete Icon";
-    deleteIcon.classList.add("deleteicon");
+    // deleteIcon.classList.add("deleteicon");
     deleteIcon.classList.add("disableable");
     deleteIcon.addEventListener("click",function(){
         verifyDelete(deleteIcon.parentElement);
@@ -237,4 +239,4 @@ function resetMenu() {
     customMenu.classList.remove("hidden")
 }
 
-export { changeMenu, createMenu, menuFactory, generateMenu }
+export { changeMenu, createMenu, menuFactory, generateMenuElement }

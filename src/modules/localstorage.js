@@ -1,4 +1,4 @@
-import { menuFactory, generateMenu } from "./menu";
+import { menuFactory, generateMenuElement } from "./menu";
 
 function checkLocalStorage(){
     if(sessionStorage.length == 0){
@@ -56,11 +56,21 @@ function loadMenusFromLocalStorage(){
     const userDataList = JSON.parse(sessionStorage.getItem("userData"));
     
     for(let i=3; i<userDataList.length; i++){
-        const generatedMenu = generateMenu(userDataList[i].menuObject);
+        const generatedMenu = generateMenuElement(userDataList[i].menuObject);
         const menuItems = document.querySelector("#menuitems");
         const menuForm = document.querySelector("#menuform");
         menuItems.insertBefore(generatedMenu, menuForm);
     }
 }
 
-export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage }
+function getListOfTaskLists(){
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+    const listOfTaskLists = [];
+
+    for(let i=2; i<userDataList.length; i++){
+        listOfTaskLists.push(userDataList[i].menuTitle);
+    }
+    return listOfTaskLists;
+}
+
+export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfTaskLists }
