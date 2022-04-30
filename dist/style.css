@@ -54,12 +54,12 @@
     padding-left: 15px;
 }
 
-.customtask {
+#createtaskbutton {
     align-self: center;
     justify-self: center;
 }
 
-.customtask:hover {
+#createtaskbutton:hover {
     transition: 150ms;
     cursor: pointer;
     transform: scale(1.1);
@@ -279,7 +279,7 @@
     background-color: #fc9e4c;
 }
 
-#custommenu {
+#createmenubutton {
     padding: 10px;
     width: 182.16px;
     font-family: 'Roboto', sans-serif;
@@ -291,7 +291,7 @@
     background-color: rgba(255, 255, 240, 0.425);
 }
 
-#custommenu:hover {
+#createmenubutton:hover {
     transition: 150ms;
     cursor: pointer;
     background-color: ivory;

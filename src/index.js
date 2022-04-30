@@ -4,7 +4,7 @@ import { changeMenu, createMenu } from "./modules/menu";
 loadInitial();
 
 const menuItems = document.querySelectorAll(".menuitem");
-const customMenu = document.querySelector("#custommenu");
+const createMenuButton = document.querySelector("#createmenubutton");
 
 menuItems.forEach(menuItem =>(
     menuItem.addEventListener("click",function(){
@@ -12,7 +12,7 @@ menuItems.forEach(menuItem =>(
     })
 ))
 
-customMenu.addEventListener("click",function(){
+createMenuButton.addEventListener("click",function(){
     createMenu();
 })
 

@@ -69,8 +69,8 @@ function createMenu() {
     const newMenuTitle = document.querySelector("#menuformtitle");
     newMenuTitle.focus();
 
-    const customMenu = document.querySelector("#custommenu");
-    customMenu.classList.add("hidden")
+    // const createMenuButton = document.querySelector("#createmenubutton");
+    // createMenuButton.classList.add("hidden")
 
     const menuFormDelete = document.querySelector("#newmenuformdelete");
     const menuFormSubmit = document.querySelector("#newmenuformsubmit");
@@ -123,6 +123,7 @@ function generateMenuElement(menuObject){
         menuContainer.classList.add(classItem)
     })
     menuContainer.addEventListener("click",function(){
+        event.stopPropagation();
         changeMenu(menuContainer)
     })
 
@@ -134,14 +135,13 @@ function generateMenuElement(menuObject){
     const deleteIcon = document.createElement("img");
     editIcon.src="./images/pencil.png";
     editIcon.alt="Edit Icon";
-    // editIcon.classList.add("editicon");
     editIcon.classList.add("disableable");
     editIcon.addEventListener("click",function(){
-        createMenuEdit(editIcon.parentElement.id)
+        event.stopPropagation();
+        createMenuEdit(editIcon.parentElement)
     })
     deleteIcon.src="./images/delete.png";
     deleteIcon.alt="Delete Icon";
-    // deleteIcon.classList.add("deleteicon");
     deleteIcon.classList.add("disableable");
     deleteIcon.addEventListener("click",function(){
         verifyDelete(deleteIcon.parentElement);
@@ -154,53 +154,44 @@ function generateMenuElement(menuObject){
     return menuContainer;
 }
 
-function createMenuEdit(menuItemID) {
+function createMenuEdit(menuElement) {
     disableDisableables();
-    const customMenu = document.querySelector("#custommenu");
-    customMenu.classList.add("hidden")
+
+    const menuTitle = menuElement.dataset.title;
     
-    const menuParent = document.getElementById(menuItemID);
-    const menuContent = document.querySelector(`#${menuItemID}-content`);
-    
-    const editMenuForm = createMenuForm(menuContent.textContent);
+    const editMenuForm = createMenuForm(menuTitle);
     const menuItems = document.querySelector("#menuitems");
-    menuItems.insertBefore(editMenuForm, menuParent);
+    menuItems.insertBefore(editMenuForm, menuElement);
 
-    const menuForm = document.querySelector("#menuForm");
-    const menuFormTitle = document.querySelector("#menuformtitle");
+    const menuFormInput = document.querySelector("#menuformtitle");
 
-    menuParent.classList.add("hidden");
+    menuElement.classList.add("hidden");
 
     const menuFormDelete = document.querySelector("#newmenuformdelete");
     const menuFormSubmit = document.querySelector("#newmenuformsubmit");
 
     menuFormDelete.addEventListener("click", function(){
         resetMenu();
-        menuParent.classList.remove("hidden");
+        menuElement.classList.remove("hidden");
     })
     menuFormSubmit.addEventListener("click", function(){
-        validateMenuEdit(menuParent, menuContent, menuFormTitle.value);
-        menuParent.classList.remove("hidden");
-        changeMenu(menuParent);
+        validateMenuEdit(menuTitle, menuFormInput.value);
+
+        const newMenuObject = menuFactory(menuFormInput.value);
+        const newMenuElement = generateMenuElement(newMenuObject);
+        const menuItems = document.querySelector("#menuitems");
+        menuItems.insertBefore(newMenuElement, menuElement);
+        changeMenu(newMenuElement)
+        menuElement.remove();
+        resetMenu();
     })
 }
 
-function validateMenuEdit(oldMenu, oldMenuContent, newMenuName){
-    const menuFormTitle = document.querySelector("#menuformtitle");
+function validateMenuEdit(oldMenuTitle, newMenuTitle){
+    const menuFormInput = document.querySelector("#menuformtitle");
 
-    if (menuFormTitle.checkValidity()===true) {
-        editMenuInLocalStorage(oldMenuContent.textContent, newMenuName);
-        const oldBody = document.querySelector(`#body-${oldMenuContent.textContent}`);
-        oldBody.id = `body-${newMenuName}`;
-        const oldBodyTitle = document.querySelector(`#body-${oldMenuContent.textContent}-title`);
-        oldBodyTitle.id = `body-${newMenuName}-title`;
-        oldBodyTitle.textContent = newMenuName;
-        oldMenu.id = `menu-${newMenuName}`;
-        oldMenu.dataset.pair = `body-${newMenuName}`;
-        oldMenu.dataset.name = newMenuName;
-        oldMenuContent.textContent = newMenuName;
-        oldMenuContent.id = `menu-${newMenuName}-content`;
-        resetMenu();
+    if (menuFormInput.checkValidity()===true) {
+        editMenuInLocalStorage(oldMenuTitle, newMenuTitle);
     } else {
         menuFormTitle.focus();
     }
@@ -235,8 +226,8 @@ function resetMenu() {
 
     enableDisableables();
 
-    const customMenu = document.querySelector("#custommenu");
-    customMenu.classList.remove("hidden")
+    // const createMenuButton = document.querySelector("#createmenubutton");
+    // createMenuButton.classList.remove("hidden")
 }
 
 export { changeMenu, createMenu, menuFactory, generateMenuElement }

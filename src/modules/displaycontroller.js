@@ -1,17 +1,25 @@
 function disableDisableables() {
     const disableables = document.querySelectorAll(".disableable");
-
-    disableables.forEach(disableable =>(
+    disableables.forEach(disableable=>{
         disableable.classList.add("disabled")
-    ))
+    })
+
+    const createButtons = document.querySelectorAll(".createbutton");
+    createButtons.forEach(createButton=>{
+        createButton.classList.add("hidden");
+    })
 }
 
 function enableDisableables() {
     const disableables = document.querySelectorAll(".disableable");
-
     disableables.forEach(disableable =>(
         disableable.classList.remove("disabled")
     ))
+
+    const createButtons = document.querySelectorAll(".createbutton");
+    createButtons.forEach(createButton=>{
+        createButton.classList.remove("hidden");
+    })
 }
 
 function displayVerifyWindow(itemToVerify) {
