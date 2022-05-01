@@ -1,4 +1,12 @@
 import { createTask } from "./task";
+import { loadTasksFromLocalStorage } from "./localstorage"
+
+function changeBody(newBodyTitle){
+    const oldBodyElement = document.querySelector(".activebody");
+    oldBodyElement.remove();
+    generateTaskBox(newBodyTitle);
+    loadTasksFromLocalStorage(newBodyTitle);
+}
 
 function generateTaskBox(bodyTitle){
     if(bodyTitle=="Completed Tasks"){
@@ -43,10 +51,10 @@ function generateCompletedTaskBox(bodyTitle){
     titleColumn.textContent = "Title";
     titleColumn.classList.add("taskcolumn","justifystart");
     taskColumns.appendChild(titleColumn);
-    const taskListColumn = document.createElement("div");
-    taskListColumn.textContent = "Task List";
-    taskListColumn.classList.add("taskcolumn","justifystart");
-    taskColumns.appendChild(taskListColumn);
+    const menuTitleColumn = document.createElement("div");
+    menuTitleColumn.textContent = "Task List";
+    menuTitleColumn.classList.add("taskcolumn","justifystart");
+    taskColumns.appendChild(menuTitleColumn);
     const completedDateColumn = document.createElement("div");
     completedDateColumn.textContent = "Completed";
     completedDateColumn.classList.add("taskcolumn","justifycenter");
@@ -103,10 +111,10 @@ function generateNormalTaskBox(bodyTitle){
     titleColumn.textContent = "Title";
     titleColumn.classList.add("taskcolumn","justifystart");
     taskColumns.appendChild(titleColumn);
-    const taskListColumn = document.createElement("div");
-    taskListColumn.textContent = "Task List";
-    taskListColumn.classList.add("taskcolumn","justifystart");
-    taskColumns.appendChild(taskListColumn);
+    const menuTitleColumn = document.createElement("div");
+    menuTitleColumn.textContent = "Task List";
+    menuTitleColumn.classList.add("taskcolumn","justifystart");
+    taskColumns.appendChild(menuTitleColumn);
     const dueDateColumn = document.createElement("div");
     dueDateColumn.textContent = "Due Date";
     dueDateColumn.classList.add("taskcolumn","justifycenter");
@@ -139,4 +147,4 @@ function generateNormalTaskBox(bodyTitle){
     body.appendChild(taskBoxContainer);
 }
 
-export { generateTaskBox }
+export { generateTaskBox, changeBody }

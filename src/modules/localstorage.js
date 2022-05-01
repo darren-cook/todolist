@@ -1,4 +1,5 @@
 import { menuFactory, generateMenuElement } from "./menu";
+import { generateTaskElement } from "./task";
 
 function checkLocalStorage(){
     if(sessionStorage.length == 0){
@@ -21,8 +22,8 @@ function createLocalStorage(){
 
 }
 
-function addMenuToLocalStorage(menuItem) {
-    const dataToAppend = {menuTitle:menuItem.title, menuObject:menuItem, taskList:[]};
+function addMenuToLocalStorage(menuObjectToAdd) {
+    const dataToAppend = {menuTitle:menuObjectToAdd.title, menuObject:menuObjectToAdd, listOfTasks:[]};
 
     const userDataList = JSON.parse(sessionStorage.getItem("userData"));
     
@@ -43,7 +44,7 @@ function removeMenuInLocalStorage(menuToRemove){
 function editMenuInLocalStorage(oldMenuTitle, newMenuTitle) {
     const userDataList = JSON.parse(sessionStorage.getItem("userData"));
 
-    const menuToEdit = userDataList.find(x => x.menuTitle==oldMenuTitle);
+    const menuToEdit = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==oldMenuTitle);
 
     menuToEdit.menuTitle = newMenuTitle;
     menuToEdit.menuObject.title = newMenuTitle;
@@ -63,14 +64,41 @@ function loadMenusFromLocalStorage(){
     }
 }
 
-function getListOfTaskLists(){
+function getListOfMenuTitles(){
     const userDataList = JSON.parse(sessionStorage.getItem("userData"));
-    const listOfTaskLists = [];
+    const listOfMenuTitles = [];
 
     for(let i=2; i<userDataList.length; i++){
-        listOfTaskLists.push(userDataList[i].menuTitle);
+        listOfMenuTitles.push(userDataList[i].menuTitle);
     }
-    return listOfTaskLists;
+    return listOfMenuTitles;
 }
 
-export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfTaskLists }
+function addTaskToLocalStorage(taskObjectToAdd){
+    const dataToAppend = {taskTitle:taskObjectToAdd.title, taskObject:taskObjectToAdd};
+
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+
+    const menuToEdit = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==taskObjectToAdd.menuTitle);
+    menuToEdit.listOfTasks.push(dataToAppend);
+
+    sessionStorage.setItem("userData",JSON.stringify(userDataList));
+}
+
+function loadTasksFromLocalStorage(menuTitleToLoad){
+    const userDataList = JSON.parse(sessionStorage.getItem("userData"));
+
+    const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToLoad);
+    const listOfTasksToLoad = menuToLoad.listOfTasks;
+
+    const taskList = document.querySelector(".tasklist");
+
+    if(listOfTasksToLoad.length > 0){
+        for(let i=0; i<listOfTasksToLoad.length; i++){
+            const newTaskElement = generateTaskElement(listOfTasksToLoad[i].taskObject);
+            taskList.appendChild(newTaskElement);
+        }
+    }
+}
+
+export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, addTaskToLocalStorage, loadTasksFromLocalStorage }

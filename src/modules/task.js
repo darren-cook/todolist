@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns";
 import { disableDisableables, enableDisableables } from "./displaycontroller";
-import { getListOfTaskLists } from "./localstorage";
+import { getListOfMenuTitles, addTaskToLocalStorage } from "./localstorage";
 
 function createTaskForm(bodyTitle, placeholder="New Task Name"){
     const taskList = document.querySelector(".tasklist");
@@ -45,21 +45,21 @@ function createTaskForm(bodyTitle, placeholder="New Task Name"){
     }
     taskForm.appendChild(taskFormTitle);
 
-    const taskFormTaskList = document.createElement("select");
-    taskFormTaskList.setAttribute("name", "taskformtasklist");
-    taskFormTaskList.setAttribute("id", "taskformtasklist");
+    const taskFormMenuTitle = document.createElement("select");
+    taskFormMenuTitle.setAttribute("name", "taskformmenutitle");
+    taskFormMenuTitle.setAttribute("id", "taskformmenutitle");
 
-    const listOfTaskLists = getListOfTaskLists();
-    for(let i=0; i<listOfTaskLists.length; i++){
+    const listOfMenuTitles = getListOfMenuTitles();
+    for(let i=0; i<listOfMenuTitles.length; i++){
         const listOption = document.createElement("option");
-        listOption.setAttribute("value",listOfTaskLists[i]);
-        listOption.textContent = listOfTaskLists[i];
-        if(listOfTaskLists[i]==bodyTitle){
+        listOption.setAttribute("value",listOfMenuTitles[i]);
+        listOption.textContent = listOfMenuTitles[i];
+        if(listOfMenuTitles[i]==bodyTitle){
             listOption.selected = true;
         }
-        taskFormTaskList.appendChild(listOption)
+        taskFormMenuTitle.appendChild(listOption)
     }
-    taskForm.appendChild(taskFormTaskList);
+    taskForm.appendChild(taskFormMenuTitle);
 
     const taskFormDueDate = document.createElement("input");
     taskFormDueDate.setAttribute("type","date");
@@ -121,7 +121,7 @@ function validateTask(){
         taskList.insertBefore(newTaskElement, taskForm);
 
         resetTask();
-        // addMenuToLocalStorage(newMenu);
+        addTaskToLocalStorage(newTaskObject);
     } else {
         taskFormTitle.focus();
     }
@@ -130,7 +130,7 @@ function validateTask(){
 const taskFactory = () => {
     const taskFormPriority = document.getElementById("taskformpriority").value;
     const taskFormTitle = document.getElementById("taskformtitle").value;
-    const taskFormTaskList = document.getElementById("taskformtasklist").value;
+    const taskFormMenuTitle = document.getElementById("taskformmenutitle").value;
     const taskFormDueDate = document.getElementById("taskformduedate").value;
 
     const formattedDueDate = formatDate(taskFormDueDate);
@@ -138,17 +138,17 @@ const taskFactory = () => {
     const title = taskFormTitle;
     const classes = ["taskitem"];
     const priority = taskFormPriority;
-    const tasklist = taskFormTaskList;
+    const menuTitle = taskFormMenuTitle;
     const duedate = formattedDueDate;
     const rawduedate = taskFormDueDate;
 
-    return {title, classes, priority, tasklist, duedate, rawduedate};
+    return {title, classes, priority, menuTitle, duedate, rawduedate};
 }
 
 function generateTaskElement(taskObject){
     const title = taskObject.title;
     const priority = taskObject.priority;
-    const tasklist = taskObject.tasklist;
+    const menuTitle = taskObject.menuTitle;
     const duedate = taskObject.duedate;
     const classes = taskObject.classes;
 
@@ -168,10 +168,10 @@ function generateTaskElement(taskObject){
     taskItemTitle.textContent = title;
     taskItemContainer.appendChild(taskItemTitle);
 
-    const taskItemTaskList = document.createElement("div");
-    taskItemTaskList.classList.add("taskdetail","justifystart");
-    taskItemTaskList.textContent = tasklist;
-    taskItemContainer.appendChild(taskItemTaskList);
+    const taskItemMenuTitle = document.createElement("div");
+    taskItemMenuTitle.classList.add("taskdetail","justifystart");
+    taskItemMenuTitle.textContent = menuTitle;
+    taskItemContainer.appendChild(taskItemMenuTitle);
 
     const taskItemDueDate = document.createElement("div");
     taskItemDueDate.classList.add("taskdetail","justifycenter");
@@ -211,18 +211,6 @@ function generateTaskElement(taskObject){
     taskItemContainer.appendChild(taskItemActionsContainer);
 
     return taskItemContainer;
-
-                        // <div class="taskitem">
-                        //     <div class="taskdetail justifycenter">Low</div>
-                        //     <div class="taskdetail justifystart">Shopping</div>
-                        //     <div class="taskdetail justifystart">General</div>
-                        //     <div class="taskdetail justifycenter">April 23</div>
-                        //     <div class="taskdetail justifycenter actionsicons">
-                        //         <img class="disableable" src="./images/pencil.png" alt="Edit Icon">
-                        //         <img class="disableable" src="./images/check.png" alt="Complete Icon">
-                        //         <img class="disableable" src="./images/delete.png" alt="Delete Icon">
-                        //     </div>
-                        // </div>
 } 
 
 function resetTask(){
@@ -246,4 +234,4 @@ function formatDate(taskFormDueDate){
     }
 }
 
-export { createTask }
+export { createTask, generateTaskElement }

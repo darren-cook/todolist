@@ -1,5 +1,5 @@
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
-import { generateTaskBox } from "./body";
+import { changeBody } from "./body";
 import { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage } from "./localstorage";
 
 function changeMenu(newMenuElement){
@@ -9,12 +9,6 @@ function changeMenu(newMenuElement){
     newMenuElement.classList.add("activemenu");
 
     changeBody(newMenuElement.dataset.title);
-}
-
-function changeBody(newBodyTitle){
-    const oldBodyElement = document.querySelector(".activebody");
-    oldBodyElement.remove();
-    generateTaskBox(newBodyTitle);
 }
 
 function createMenuForm(placeholder="New Task List") {
