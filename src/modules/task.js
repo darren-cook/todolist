@@ -133,15 +133,13 @@ const taskFactory = () => {
     const taskFormTaskList = document.getElementById("taskformtasklist").value;
     const taskFormDueDate = document.getElementById("taskformduedate").value;
 
-    const parsedDate = parseISO(taskFormDueDate, 1);
-    const month = format(parsedDate, "MMM");
-    const day = format(parsedDate, "do");
+    const formattedDueDate = formatDate(taskFormDueDate);
 
     const title = taskFormTitle;
     const classes = ["taskitem"];
     const priority = taskFormPriority;
     const tasklist = taskFormTaskList;
-    const duedate = `${month} ${day}`;
+    const duedate = formattedDueDate;
     const rawduedate = taskFormDueDate;
 
     return {title, classes, priority, tasklist, duedate, rawduedate};
@@ -235,6 +233,17 @@ function resetTask(){
 
     // const customTask = document.querySelector(".customtask");
     // customTask.classList.remove("hidden")
+}
+
+function formatDate(taskFormDueDate){
+    if (taskFormDueDate == ""){
+        return ("");
+    } else {
+        const parsedDate = parseISO(taskFormDueDate, 1);
+        const month = format(parsedDate, "MMM");
+        const day = format(parsedDate, "do");
+        return(`${month} ${day}`);
+    }
 }
 
 export { createTask }
