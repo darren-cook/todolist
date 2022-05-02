@@ -255,6 +255,15 @@
     font-family: 'Roboto', sans-serif;
     align-self: flex-start;
     justify-self: center;
+    font-size: 15px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.menucontent {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-height: 20px;
 }
 
 .menuedit {
