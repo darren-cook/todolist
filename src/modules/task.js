@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns";
-import { disableDisableables, enableDisableables } from "./displaycontroller";
-import { getListOfMenuTitles, addTaskToLocalStorage } from "./localstorage";
+import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
+import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage } from "./localstorage";
 
 function createTaskForm(bodyTitle, placeholder="New Task Name"){
     const taskList = document.querySelector(".tasklist");
@@ -105,21 +105,22 @@ function createTask(bodyTitle){
         resetTask();
     })
     taskFormSubmit.addEventListener("click", function(){
-        validateTask();
+        validateTask(bodyTitle);
     })
 }
 
-function validateTask(){
+function validateTask(bodyTitle){
     const taskFormTitle = document.querySelector("#taskformtitle");
 
     if (taskFormTitle.checkValidity()===true) {
         const newTaskObject = taskFactory(taskFormTitle.value);
-        const newTaskElement = generateTaskElement(newTaskObject);
+        if(bodyTitle==newTaskObject.menuTitle){
+            const newTaskElement = generateTaskElement(newTaskObject);
 
-        const taskList = document.querySelector(".tasklist");
-        const taskForm = document.querySelector("#taskform");
-        taskList.insertBefore(newTaskElement, taskForm);
-
+            const taskList = document.querySelector(".tasklist");
+            const taskForm = document.querySelector("#taskform");
+            taskList.insertBefore(newTaskElement, taskForm);
+        }
         resetTask();
         addTaskToLocalStorage(newTaskObject);
     } else {
@@ -154,6 +155,7 @@ function generateTaskElement(taskObject){
 
     const taskItemContainer = document.createElement("div");
     taskItemContainer.setAttribute("id",`task-${title}`);
+    taskItemContainer.dataset.title = title;
     classes.forEach(classItem=>{
         taskItemContainer.classList.add(classItem)
     })
@@ -204,7 +206,7 @@ function generateTaskElement(taskObject){
     taskItemDeleteIcon.setAttribute("src","./images/delete.png");
     taskItemDeleteIcon.setAttribute("alt","Delete Icon");
     taskItemDeleteIcon.addEventListener("click",function(){
-        console.log('del');
+        verifyTaskDelete(taskItemDeleteIcon.parentElement.parentElement)
     })
     taskItemActionsContainer.appendChild(taskItemDeleteIcon);
 
@@ -227,11 +229,38 @@ function formatDate(taskFormDueDate){
     if (taskFormDueDate == ""){
         return ("");
     } else {
+        const currentYear = format(new(Date), "yyyy");
+
         const parsedDate = parseISO(taskFormDueDate, 1);
-        const month = format(parsedDate, "MMM");
-        const day = format(parsedDate, "do");
-        return(`${month} ${day}`);
+        const dueDateMonth = format(parsedDate, "MMM");
+        const dueDateDay = format(parsedDate, "do");
+        const dueDateYear = format(parsedDate, "yyyy");
+
+        if(currentYear==dueDateYear){
+            return(`${dueDateMonth} ${dueDateDay}`);
+        } else {
+            return(`${dueDateMonth} ${dueDateDay}, ${dueDateYear}`)
+        }
     }
+}
+
+function verifyTaskDelete(taskElementToDelete){
+    displayVerifyWindow(taskElementToDelete.dataset.title);
+    const cancelButton = document.querySelector("#cancelbutton");
+    const deleteButton = document.querySelector("#deletebutton"); 
+
+    cancelButton.addEventListener("click",function(){
+        removeVerifyWindow();
+    })
+    deleteButton.addEventListener("click",function(){
+        deleteTask(taskElementToDelete);
+        removeVerifyWindow();
+    })
+}
+
+function deleteTask(taskElementToDelete){
+    removeTaskInLocalStorage(taskElementToDelete.dataset.title, taskElementToDelete.parentElement.parentElement.parentElement.dataset.title);
+    taskElementToDelete.remove();
 }
 
 export { createTask, generateTaskElement }

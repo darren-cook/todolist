@@ -22,7 +22,7 @@ function enableDisableables() {
     })
 }
 
-function displayVerifyWindow(itemToVerify) {
+function displayVerifyWindow(elementToVerifyTitle) {
     const bodyContainer = document.querySelector("#body");
     const sideBarContainer = document.querySelector("#sidebar");
     bodyContainer.style.filter = "blur(3px)";
@@ -47,7 +47,7 @@ function displayVerifyWindow(itemToVerify) {
     warningIcon.setAttribute("alt","Warning Icon");
     const warningItem = document.createElement("h3");
     warningItem.setAttribute("id","warningitem");
-    warningItem.textContent = `Delete - ${itemToVerify.firstChild.textContent}`;
+    warningItem.textContent = `Delete - ${elementToVerifyTitle}`;
     const warningMessage = document.createElement("p");
     warningMessage.setAttribute("id","warningmessage");
     warningMessage.textContent = "This action cannot be undone.";

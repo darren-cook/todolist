@@ -22,6 +22,7 @@ function generateCompletedTaskBox(bodyTitle){
 
     const taskBoxContainer = document.createElement("div");
     taskBoxContainer.setAttribute("id",`body-${bodyTitle}`);
+    taskBoxContainer.dataset.title = bodyTitle;
     taskBoxContainer.classList.add("taskbox");
     taskBoxContainer.classList.add("activebody");
 
@@ -82,6 +83,7 @@ function generateNormalTaskBox(bodyTitle){
 
     const taskBoxContainer = document.createElement("div");
     taskBoxContainer.setAttribute("id",`body-${bodyTitle}`);
+    taskBoxContainer.dataset.title = bodyTitle;
     taskBoxContainer.classList.add("taskbox");
     taskBoxContainer.classList.add("activebody");
 

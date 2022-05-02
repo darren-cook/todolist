@@ -23,7 +23,7 @@ function createMenuForm(placeholder="New Task List") {
     menuInput.setAttribute("id","menuformtitle");
     menuInput.setAttribute("name","menuformtitle");
     menuInput.required = true;
-    menuInput.setAttribute("maxlength","15");
+    menuInput.setAttribute("maxlength","25");
     if(placeholder=="New Task List") {
         menuInput.setAttribute("placeholder","New Task List")
     } else {
@@ -124,6 +124,7 @@ function generateMenuElement(menuObject){
     const menuContent = document.createElement("div");
     menuContent.setAttribute("id",`menu-${title}-content`)
     menuContent.textContent = title;
+    menuContent.classList.add("menucontent");
 
     const editIcon = document.createElement("img");
     const deleteIcon = document.createElement("img");
@@ -138,7 +139,7 @@ function generateMenuElement(menuObject){
     deleteIcon.alt="Delete Icon";
     deleteIcon.classList.add("disableable");
     deleteIcon.addEventListener("click",function(){
-        verifyDelete(deleteIcon.parentElement);
+        verifyMenuDelete(deleteIcon.parentElement);
     })
 
     menuContainer.appendChild(menuContent);
@@ -191,8 +192,8 @@ function validateMenuEdit(oldMenuTitle, newMenuTitle){
     }
 }
 
-function verifyDelete(menuElementToDelete) {
-    displayVerifyWindow(menuElementToDelete);
+function verifyMenuDelete(menuElementToDelete) {
+    displayVerifyWindow(menuElementToDelete.dataset.title);
     const cancelButton = document.querySelector("#cancelbutton");
     const deleteButton = document.querySelector("#deletebutton");
 
