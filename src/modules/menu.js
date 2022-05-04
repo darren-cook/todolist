@@ -23,7 +23,7 @@ function createMenuForm(placeholder="New Task List") {
     menuInput.setAttribute("id","menuformtitle");
     menuInput.setAttribute("name","menuformtitle");
     menuInput.required = true;
-    menuInput.setAttribute("maxlength","25");
+    menuInput.setAttribute("maxlength","20");
     if(placeholder=="New Task List") {
         menuInput.setAttribute("placeholder","New Task List")
     } else {

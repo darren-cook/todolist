@@ -36,7 +36,7 @@ function createTaskForm(bodyTitle, placeholder="New Task Name"){
     taskFormTitle.setAttribute("type","text");
     taskFormTitle.setAttribute("name","taskformtitle");
     taskFormTitle.setAttribute("id","taskformtitle");
-    taskFormTitle.setAttribute("maxlength","15");
+    taskFormTitle.setAttribute("maxlength","64");
     taskFormTitle.required = true;
     if(placeholder=="New Task Name") {
         taskFormTitle.setAttribute("placeholder","New Task Name")
