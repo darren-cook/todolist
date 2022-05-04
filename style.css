@@ -80,7 +80,7 @@
 .taskcolumns {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 75px 1fr 150px 100px 150px;
+    grid-template-columns: 75px minmax(200px, 1fr) 175px 100px 100px;
     font-family: 'Roboto', sans-serif;
     font-size: 17px;
     align-self: center;
@@ -132,16 +132,20 @@
 
 .taskitem {
     display: grid;
-    grid-template-columns: 75px 1fr 150px 100px 150px;
+    grid-template-columns: 75px minmax(200px, 1fr) 175px 100px 100px;
     grid-template-rows: 1fr;
     background-color: #e2e2e2;
     font-family: 'Roboto', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     color: black;
 }
 
 .taskdetail {
+    max-width: 100%;
     align-self: center;
+    overflow-x: hidden;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
 }
 
 .actionsicons {
@@ -160,7 +164,7 @@
 
 #taskform {
     display: grid;
-    grid-template-columns: 75px 1fr 150px 150px 150px;
+    grid-template-columns: 75px 1fr 150px 150px 100px;
     grid-template-rows: 1fr;
     gap: 10px;
     padding: 5px;
@@ -377,7 +381,8 @@
 #verifydelete {
     position: absolute;
     height: 175px;
-    width: 350px;
+    min-width: 350px;
+    padding: 10px;
     border-radius: 5px;
     background-color: rgb(255, 255, 255);
     display: grid;
@@ -388,6 +393,7 @@
 
 #verifydeletetop {
     display: grid;
+    overflow: visible;
     row-gap: 5px;
     grid-template-columns: 100px 1fr;
     grid-template-rows: 1fr 1fr;
@@ -403,6 +409,7 @@
     grid-area: 1 / 2 / 2 / 3;
     align-self: flex-end;
     justify-self: flex-start;
+    width: calc(min-content);
 }
 
 #warningmessage {
