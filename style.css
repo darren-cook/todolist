@@ -410,6 +410,7 @@
     align-self: flex-end;
     justify-self: flex-start;
     width: calc(min-content);
+    padding-right: 25px;
 }
 
 #warningmessage {
