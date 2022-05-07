@@ -82,6 +82,9 @@ function addTaskToLocalStorage(taskObjectToAdd){
     const menuToEdit = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==taskObjectToAdd.menuTitle);
     menuToEdit.listOfTasks.push(dataToAppend);
 
+    const allTasksMenu = userDataList[0];
+    allTasksMenu.listOfTasks.push(dataToAppend);
+
     localStorage.setItem("userData",JSON.stringify(userDataList));
 }
 
@@ -104,15 +107,19 @@ function loadTasksFromLocalStorage(menuTitleToLoad){
 function removeTaskInLocalStorage(taskTitleToDelete, menuTitleOfTask){
     const userDataList = JSON.parse(localStorage.getItem("userData"));
     const menuToEdit = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleOfTask);
-    console.log(menuToEdit);
 
     const listOfTasksToEdit = menuToEdit.listOfTasks;
-    console.log(listOfTasksToEdit);
-
     const newlistOfTasks = listOfTasksToEdit.filter(function( obj ) {
         return obj.taskTitle !== taskTitleToDelete;
     })
     menuToEdit.listOfTasks = newlistOfTasks;
+
+    const allTasksMenu = userDataList[0]
+    const allTasksListOfTasks = allTasksMenu.listOfTasks;
+    const newlistOfAllTasks = allTasksListOfTasks.filter(function( obj ) {
+        return obj.taskTitle !== taskTitleToDelete;
+    })
+    allTasksMenu.listOfTasks = newlistOfAllTasks;
 
     localStorage.setItem("userData",JSON.stringify(userDataList));
 }

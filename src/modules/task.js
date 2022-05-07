@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
 import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage } from "./localstorage";
+import { changeBody } from "./body";
 
 function createTaskForm(bodyTitle, placeholder="New Task Name"){
     const taskList = document.querySelector(".tasklist");
@@ -123,6 +124,7 @@ function validateTask(bodyTitle){
         }
         resetTask();
         addTaskToLocalStorage(newTaskObject);
+        changeBody(bodyTitle);
     } else {
         taskFormTitle.focus();
     }
@@ -156,6 +158,7 @@ function generateTaskElement(taskObject){
     const taskItemContainer = document.createElement("div");
     taskItemContainer.setAttribute("id",`task-${title}`);
     taskItemContainer.dataset.title = title;
+    taskItemContainer.dataset.menutitle = menuTitle;
     classes.forEach(classItem=>{
         taskItemContainer.classList.add(classItem)
     })
@@ -220,9 +223,6 @@ function resetTask(){
     taskForm.remove();
 
     enableDisableables();
-
-    // const customTask = document.querySelector(".customtask");
-    // customTask.classList.remove("hidden")
 }
 
 function formatDate(taskFormDueDate){
@@ -259,7 +259,7 @@ function verifyTaskDelete(taskElementToDelete){
 }
 
 function deleteTask(taskElementToDelete){
-    removeTaskInLocalStorage(taskElementToDelete.dataset.title, taskElementToDelete.parentElement.parentElement.parentElement.dataset.title);
+    removeTaskInLocalStorage(taskElementToDelete.dataset.title, taskElementToDelete.dataset.menutitle);
     taskElementToDelete.remove();
 }
 
