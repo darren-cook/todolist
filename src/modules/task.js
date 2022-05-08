@@ -1,11 +1,10 @@
 import { format, parseISO } from "date-fns";
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
-import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage } from "./localstorage";
+import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage } from "./localstorage";
 import { changeBody } from "./body";
+import { changeMenu } from "./menu";
 
-function createTaskForm(bodyTitle, placeholder="New Task Name"){
-    const taskList = document.querySelector(".tasklist");
-
+function createTaskForm(bodyTitle){
     const taskForm = document.createElement("form");
     taskForm.setAttribute("id","taskform");
     taskForm.setAttribute("onSubmit","return false");
@@ -39,11 +38,7 @@ function createTaskForm(bodyTitle, placeholder="New Task Name"){
     taskFormTitle.setAttribute("id","taskformtitle");
     taskFormTitle.setAttribute("maxlength","64");
     taskFormTitle.required = true;
-    if(placeholder=="New Task Name") {
-        taskFormTitle.setAttribute("placeholder","New Task Name")
-    } else {
-        taskFormTitle.value = placeholder;
-    }
+    taskFormTitle.setAttribute("placeholder","New Task Name")
     taskForm.appendChild(taskFormTitle);
 
     const taskFormMenuTitle = document.createElement("select");
@@ -67,6 +62,86 @@ function createTaskForm(bodyTitle, placeholder="New Task Name"){
     taskFormDueDate.setAttribute("name","taskformduedate");
     taskFormDueDate.setAttribute("id","taskformduedate");
 
+    taskForm.appendChild(taskFormDueDate);
+
+    const taskFormActionsIcons = document.createElement("div");
+    taskFormActionsIcons.setAttribute("id","taskFormActionsIcons");
+    taskFormActionsIcons.classList.add("taskdetail","justifycenter","actionsicons");
+
+    const taskFormSubmit = document.createElement("img");
+    taskFormSubmit.setAttribute("id","taskformsubmit");
+    taskFormSubmit.setAttribute("src","./images/check.png");
+    taskFormSubmit.setAttribute("alt","Complete Icon");
+    const taskFormDelete = document.createElement("img");
+    taskFormDelete.setAttribute("id","taskformdelete");
+    taskFormDelete.setAttribute("src","./images/delete.png");
+    taskFormDelete.setAttribute("alt","Delete Icon");
+
+    taskFormActionsIcons.appendChild(taskFormSubmit);
+    taskFormActionsIcons.appendChild(taskFormDelete);
+    taskForm.appendChild(taskFormActionsIcons);
+    
+    return taskForm;
+}
+
+function createTaskEditForm(priority, title, menuTitle, rawduedate){
+    const taskForm = document.createElement("form");
+    taskForm.setAttribute("id","taskform");
+    taskForm.setAttribute("onSubmit","return false");
+
+    const taskFormPriority = document.createElement("select");
+    taskFormPriority.setAttribute("name", "taskformpriority");
+    taskFormPriority.setAttribute("id", "taskformpriority");
+
+    const taskFormOptionBlank = document.createElement("option");
+    taskFormOptionBlank.setAttribute("value","");
+    taskFormOptionBlank.textContent = "";
+    const taskFormOptionLow = document.createElement("option");
+    taskFormOptionLow.setAttribute("value","Low");
+    taskFormOptionLow.textContent = "Low";
+    const taskFormOptionMedium = document.createElement("option");
+    taskFormOptionMedium.setAttribute("value","Medium");
+    taskFormOptionMedium.textContent = "Medium";
+    const taskFormOptionHigh = document.createElement("option");
+    taskFormOptionHigh.setAttribute("value","High");
+    taskFormOptionHigh.textContent = "High";
+
+    taskFormPriority.appendChild(taskFormOptionBlank);
+    taskFormPriority.appendChild(taskFormOptionLow);
+    taskFormPriority.appendChild(taskFormOptionMedium);
+    taskFormPriority.appendChild(taskFormOptionHigh);
+
+    taskFormPriority.value = priority;
+    taskForm.appendChild(taskFormPriority);
+
+    const taskFormTitle = document.createElement("input");
+    taskFormTitle.setAttribute("type","text");
+    taskFormTitle.setAttribute("name","taskformtitle");
+    taskFormTitle.setAttribute("id","taskformtitle");
+    taskFormTitle.setAttribute("maxlength","64");
+    taskFormTitle.required = true;
+    taskFormTitle.value = title;
+    taskForm.appendChild(taskFormTitle);
+
+    const taskFormMenuTitle = document.createElement("select");
+    taskFormMenuTitle.setAttribute("name", "taskformmenutitle");
+    taskFormMenuTitle.setAttribute("id", "taskformmenutitle");
+
+    const listOfMenuTitles = getListOfMenuTitles();
+    for(let i=0; i<listOfMenuTitles.length; i++){
+        const listOption = document.createElement("option");
+        listOption.setAttribute("value",listOfMenuTitles[i]);
+        listOption.textContent = listOfMenuTitles[i];
+        taskFormMenuTitle.appendChild(listOption)
+    }
+    taskFormMenuTitle.value = menuTitle;
+    taskForm.appendChild(taskFormMenuTitle);
+
+    const taskFormDueDate = document.createElement("input");
+    taskFormDueDate.setAttribute("type","date");
+    taskFormDueDate.setAttribute("name","taskformduedate");
+    taskFormDueDate.setAttribute("id","taskformduedate");
+    taskFormDueDate.defaultValue = rawduedate;
     taskForm.appendChild(taskFormDueDate);
 
     const taskFormActionsIcons = document.createElement("div");
@@ -114,7 +189,8 @@ function validateTask(bodyTitle){
     const taskFormTitle = document.querySelector("#taskformtitle");
 
     if (taskFormTitle.checkValidity()===true) {
-        const newTaskObject = taskFactory(taskFormTitle.value);
+        const activeMenu = document.querySelector(".activemenu");
+        const newTaskObject = taskFactory();
         if(bodyTitle==newTaskObject.menuTitle){
             const newTaskElement = generateTaskElement(newTaskObject);
 
@@ -124,7 +200,7 @@ function validateTask(bodyTitle){
         }
         resetTask();
         addTaskToLocalStorage(newTaskObject);
-        changeBody(bodyTitle);
+        changeMenu(activeMenu);
     } else {
         taskFormTitle.focus();
     }
@@ -191,7 +267,7 @@ function generateTaskElement(taskObject){
     taskItemEditIcon.setAttribute("src","./images/pencil.png");
     taskItemEditIcon.setAttribute("alt","Edit Icon");
     taskItemEditIcon.addEventListener("click",function(){
-        console.log('edit');
+        createTaskEdit(taskItemEditIcon.parentElement.parentElement);
     })
     taskItemActionsContainer.appendChild(taskItemEditIcon);
 
@@ -263,4 +339,49 @@ function deleteTask(taskElementToDelete){
     taskElementToDelete.remove();
 }
 
-export { createTask, generateTaskElement }
+function createTaskEdit(taskElementToEdit){
+    disableDisableables();
+
+    const taskList = document.querySelector(".tasklist");
+
+    const oldMenuTitle = taskElementToEdit.dataset.menutitle;
+    const oldTaskTitle = taskElementToEdit.dataset.title;
+
+    const oldTaskObject = getTaskObjectFromLocalStorage(oldMenuTitle, oldTaskTitle);
+    const taskEditForm = createTaskEditForm(oldTaskObject.priority, oldTaskObject.title, oldTaskObject.menuTitle, oldTaskObject.rawduedate);
+
+    taskList.insertBefore(taskEditForm, taskElementToEdit);
+    taskElementToEdit.classList.add("hidden");
+
+    const taskFormDelete = document.querySelector("#taskformdelete");
+    const taskFormSubmit = document.querySelector("#taskformsubmit");
+
+    taskFormDelete.addEventListener("click", function(){
+        resetTask();
+        taskElementToEdit.classList.remove("hidden");
+    })
+    taskFormSubmit.addEventListener("click", function(){
+        validateTaskEdit(oldTaskObject, taskElementToEdit);
+    })
+
+}
+
+function validateTaskEdit(oldTaskObject, taskElementToEdit){
+    const taskFormInput = document.querySelector("#taskformtitle");
+
+    if (taskFormInput.checkValidity()===true) {
+        const activeMenu = document.querySelector(".activemenu");
+        const newTaskObject = taskFactory();
+        const newTaskElement = generateTaskElement(newTaskObject);
+        const taskList = document.querySelector(".tasklist");
+        taskList.insertBefore(newTaskElement, taskElementToEdit);
+        taskElementToEdit.remove();
+        resetTask();
+        editTaskInLocalStorage(oldTaskObject, newTaskObject);
+        changeMenu(activeMenu);
+    } else {
+        taskFormInput.focus();
+    }
+}
+
+export { createTask, generateTaskElement, deleteTask }

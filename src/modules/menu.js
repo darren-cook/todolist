@@ -149,46 +149,46 @@ function generateMenuElement(menuObject){
     return menuContainer;
 }
 
-function createMenuEdit(menuElement) {
+function createMenuEdit(menuElementToEdit) {
     disableDisableables();
 
-    const menuTitle = menuElement.dataset.title;
+    const menuTitle = menuElementToEdit.dataset.title;
     
     const editMenuForm = createMenuForm(menuTitle);
     const menuItems = document.querySelector("#menuitems");
-    menuItems.insertBefore(editMenuForm, menuElement);
+    menuItems.insertBefore(editMenuForm, menuElementToEdit);
 
     const menuFormInput = document.querySelector("#menuformtitle");
 
-    menuElement.classList.add("hidden");
+    menuElementToEdit.classList.add("hidden");
 
     const menuFormDelete = document.querySelector("#newmenuformdelete");
     const menuFormSubmit = document.querySelector("#newmenuformsubmit");
 
     menuFormDelete.addEventListener("click", function(){
         resetMenu();
-        menuElement.classList.remove("hidden");
+        menuElementToEdit.classList.remove("hidden");
     })
     menuFormSubmit.addEventListener("click", function(){
-        validateMenuEdit(menuTitle, menuFormInput.value);
-
-        const newMenuObject = menuFactory(menuFormInput.value);
-        const newMenuElement = generateMenuElement(newMenuObject);
-        const menuItems = document.querySelector("#menuitems");
-        menuItems.insertBefore(newMenuElement, menuElement);
-        changeMenu(newMenuElement)
-        menuElement.remove();
-        resetMenu();
+        validateMenuEdit(menuTitle, menuFormInput.value, menuElementToEdit);
     })
 }
 
-function validateMenuEdit(oldMenuTitle, newMenuTitle){
+function validateMenuEdit(oldMenuTitle, newMenuTitle, menuElementToEdit){
     const menuFormInput = document.querySelector("#menuformtitle");
 
     if (menuFormInput.checkValidity()===true) {
         editMenuInLocalStorage(oldMenuTitle, newMenuTitle);
+
+        const newMenuObject = menuFactory(menuFormInput.value);
+        const newMenuElement = generateMenuElement(newMenuObject);
+        const menuItems = document.querySelector("#menuitems");
+        menuItems.insertBefore(newMenuElement, menuElementToEdit);
+        changeMenu(newMenuElement)
+        menuElementToEdit.remove();
+        resetMenu();
     } else {
-        menuFormTitle.focus();
+        menuFormInput.focus();
     }
 }
 
@@ -204,13 +204,12 @@ function verifyMenuDelete(menuElementToDelete) {
         const allTasksMenu = document.querySelector("#menu-alltasks");
         changeMenu(allTasksMenu)
         deleteMenu(menuElementToDelete);
+        changeMenu(allTasksMenu)
         removeVerifyWindow();
     })
 }
 
 function deleteMenu(menuElementToDelete) {
-    // const bodyElementToDelete = document.getElementById(menuElementToDelete.dataset.pair);
-    // need to remove from local storage
     removeMenuInLocalStorage(menuElementToDelete.dataset.title);
     menuElementToDelete.remove();
 }
@@ -220,9 +219,6 @@ function resetMenu() {
     menuForm.remove();
 
     enableDisableables();
-
-    // const createMenuButton = document.querySelector("#createmenubutton");
-    // createMenuButton.classList.remove("hidden")
 }
 
 export { changeMenu, createMenu, menuFactory, generateMenuElement }
