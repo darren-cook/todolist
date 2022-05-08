@@ -220,8 +220,10 @@ const taskFactory = () => {
     const menuTitle = taskFormMenuTitle;
     const duedate = formattedDueDate;
     const rawduedate = taskFormDueDate;
+    const completeddate = "";
+    const originalMenuTitle = "";
 
-    return {title, classes, priority, menuTitle, duedate, rawduedate};
+    return {title, classes, priority, menuTitle, duedate, rawduedate, completeddate, originalMenuTitle};
 }
 
 function generateTaskElement(taskObject){
@@ -230,6 +232,8 @@ function generateTaskElement(taskObject){
     const menuTitle = taskObject.menuTitle;
     const duedate = taskObject.duedate;
     const classes = taskObject.classes;
+    const completeddate = taskObject.completeddate;
+    const originalMenuTitle = taskObject.originalMenuTitle;
 
     const taskItemContainer = document.createElement("div");
     taskItemContainer.setAttribute("id",`task-${title}`);
@@ -249,47 +253,86 @@ function generateTaskElement(taskObject){
     taskItemTitle.textContent = title;
     taskItemContainer.appendChild(taskItemTitle);
 
-    const taskItemMenuTitle = document.createElement("div");
-    taskItemMenuTitle.classList.add("taskdetail","justifystart");
-    taskItemMenuTitle.textContent = menuTitle;
-    taskItemContainer.appendChild(taskItemMenuTitle);
+    if(menuTitle=="Completed Tasks"){
+        const taskItemMenuTitle = document.createElement("div");
+        taskItemMenuTitle.classList.add("taskdetail","justifystart");
+        taskItemMenuTitle.textContent = originalMenuTitle;
+        taskItemContainer.appendChild(taskItemMenuTitle);
+    } else {
+        const taskItemMenuTitle = document.createElement("div");
+        taskItemMenuTitle.classList.add("taskdetail","justifystart");
+        taskItemMenuTitle.textContent = menuTitle;
+        taskItemContainer.appendChild(taskItemMenuTitle);
+    }
 
-    const taskItemDueDate = document.createElement("div");
-    taskItemDueDate.classList.add("taskdetail","justifycenter");
-    taskItemDueDate.textContent = duedate;
-    taskItemContainer.appendChild(taskItemDueDate);
+    if(menuTitle=="Completed Tasks"){
+        const taskItemCompletedDate = document.createElement("div");
+        taskItemCompletedDate.classList.add("taskdetail","justifycenter");
+        taskItemCompletedDate.textContent = completeddate;
+        taskItemContainer.appendChild(taskItemCompletedDate);
+    } else {
+        const taskItemDueDate = document.createElement("div");
+        taskItemDueDate.classList.add("taskdetail","justifycenter");
+        taskItemDueDate.textContent = duedate;
+        taskItemContainer.appendChild(taskItemDueDate);
+    }
 
-    const taskItemActionsContainer = document.createElement("div");
-    taskItemActionsContainer.classList.add("taskdetail","justifycenter","actionsicons");
-
-    const taskItemEditIcon = document.createElement("img");
-    taskItemEditIcon.classList.add("disableable");
-    taskItemEditIcon.setAttribute("src","./images/pencil.png");
-    taskItemEditIcon.setAttribute("alt","Edit Icon");
-    taskItemEditIcon.addEventListener("click",function(){
-        createTaskEdit(taskItemEditIcon.parentElement.parentElement);
-    })
-    taskItemActionsContainer.appendChild(taskItemEditIcon);
-
-    const taskItemCompleteIcon = document.createElement("img");
-    taskItemCompleteIcon.classList.add("disableable");
-    taskItemCompleteIcon.setAttribute("src","./images/check.png");
-    taskItemCompleteIcon.setAttribute("alt","Complete Icon");
-    taskItemCompleteIcon.addEventListener("click",function(){
-        console.log('comp');
-    })
-    taskItemActionsContainer.appendChild(taskItemCompleteIcon);
+    if(menuTitle=="Completed Tasks"){
+        const taskItemActionsContainer = document.createElement("div");
+        taskItemActionsContainer.classList.add("taskdetail","justifycenter","actionsicons");
     
-    const taskItemDeleteIcon = document.createElement("img");
-    taskItemDeleteIcon.classList.add("disableable");
-    taskItemDeleteIcon.setAttribute("src","./images/delete.png");
-    taskItemDeleteIcon.setAttribute("alt","Delete Icon");
-    taskItemDeleteIcon.addEventListener("click",function(){
-        verifyTaskDelete(taskItemDeleteIcon.parentElement.parentElement)
-    })
-    taskItemActionsContainer.appendChild(taskItemDeleteIcon);
-
-    taskItemContainer.appendChild(taskItemActionsContainer);
+        const taskItemUndoIcon = document.createElement("img");
+        taskItemUndoIcon.classList.add("disableable");
+        taskItemUndoIcon.setAttribute("src","./images/undo.png");
+        taskItemUndoIcon.setAttribute("alt","Edit Icon");
+        taskItemUndoIcon.addEventListener("click",function(){
+            console.log("undo");
+        })
+        taskItemActionsContainer.appendChild(taskItemUndoIcon);
+        
+        const taskItemDeleteIcon = document.createElement("img");
+        taskItemDeleteIcon.classList.add("disableable");
+        taskItemDeleteIcon.setAttribute("src","./images/delete.png");
+        taskItemDeleteIcon.setAttribute("alt","Delete Icon");
+        taskItemDeleteIcon.addEventListener("click",function(){
+            verifyTaskDelete(taskItemDeleteIcon.parentElement.parentElement)
+        })
+        taskItemActionsContainer.appendChild(taskItemDeleteIcon);
+    
+        taskItemContainer.appendChild(taskItemActionsContainer);
+    } else {
+        const taskItemActionsContainer = document.createElement("div");
+        taskItemActionsContainer.classList.add("taskdetail","justifycenter","actionsicons");
+    
+        const taskItemEditIcon = document.createElement("img");
+        taskItemEditIcon.classList.add("disableable");
+        taskItemEditIcon.setAttribute("src","./images/pencil.png");
+        taskItemEditIcon.setAttribute("alt","Edit Icon");
+        taskItemEditIcon.addEventListener("click",function(){
+            createTaskEdit(taskItemEditIcon.parentElement.parentElement);
+        })
+        taskItemActionsContainer.appendChild(taskItemEditIcon);
+    
+        const taskItemCompleteIcon = document.createElement("img");
+        taskItemCompleteIcon.classList.add("disableable");
+        taskItemCompleteIcon.setAttribute("src","./images/check.png");
+        taskItemCompleteIcon.setAttribute("alt","Complete Icon");
+        taskItemCompleteIcon.addEventListener("click",function(){
+            completeTask(taskItemEditIcon.parentElement.parentElement);
+        })
+        taskItemActionsContainer.appendChild(taskItemCompleteIcon);
+        
+        const taskItemDeleteIcon = document.createElement("img");
+        taskItemDeleteIcon.classList.add("disableable");
+        taskItemDeleteIcon.setAttribute("src","./images/delete.png");
+        taskItemDeleteIcon.setAttribute("alt","Delete Icon");
+        taskItemDeleteIcon.addEventListener("click",function(){
+            verifyTaskDelete(taskItemDeleteIcon.parentElement.parentElement)
+        })
+        taskItemActionsContainer.appendChild(taskItemDeleteIcon);
+    
+        taskItemContainer.appendChild(taskItemActionsContainer);
+    }
 
     return taskItemContainer;
 } 
@@ -382,6 +425,27 @@ function validateTaskEdit(oldTaskObject, taskElementToEdit){
     } else {
         taskFormInput.focus();
     }
+}
+
+function completeTask(taskElementToComplete){
+    const activeMenu = document.querySelector(".activemenu");
+
+    const oldTaskObject = getTaskObjectFromLocalStorage(taskElementToComplete.dataset.menutitle, taskElementToComplete.dataset.title);
+    const newTaskObject = getTaskObjectFromLocalStorage(taskElementToComplete.dataset.menutitle, taskElementToComplete.dataset.title);
+
+    newTaskObject.menuTitle = "Completed Tasks";
+    newTaskObject.originalMenuTitle = oldTaskObject.menuTitle;
+
+    const currentDate = new(Date);
+    const currentDateMonth = format(currentDate, "MMM");
+    const currentDateDay = format(currentDate, "do");
+    const currentDateYear = format(currentDate, "yyyy");
+
+    const formattedCurrentDate = `${currentDateMonth} ${currentDateDay}, ${currentDateYear}`
+    newTaskObject.completeddate = formattedCurrentDate;
+
+    editTaskInLocalStorage(oldTaskObject, newTaskObject);
+    changeMenu(activeMenu);
 }
 
 export { createTask, generateTaskElement, deleteTask }
