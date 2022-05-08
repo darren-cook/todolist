@@ -286,7 +286,7 @@ function generateTaskElement(taskObject){
         taskItemUndoIcon.setAttribute("src","./images/undo.png");
         taskItemUndoIcon.setAttribute("alt","Edit Icon");
         taskItemUndoIcon.addEventListener("click",function(){
-            console.log("undo");
+            undoCompleteTask(taskItemUndoIcon.parentElement.parentElement);
         })
         taskItemActionsContainer.appendChild(taskItemUndoIcon);
         
@@ -379,6 +379,7 @@ function verifyTaskDelete(taskElementToDelete){
 
 function deleteTask(taskElementToDelete){
     removeTaskInLocalStorage(taskElementToDelete.dataset.title, taskElementToDelete.dataset.menutitle);
+    removeTaskInLocalStorage(taskElementToDelete.dataset.title, "All Tasks");
     taskElementToDelete.remove();
 }
 
@@ -445,6 +446,21 @@ function completeTask(taskElementToComplete){
     newTaskObject.completeddate = formattedCurrentDate;
 
     editTaskInLocalStorage(oldTaskObject, newTaskObject);
+    removeTaskInLocalStorage(oldTaskObject.title, "All Tasks")
+    changeMenu(activeMenu);
+}
+
+function undoCompleteTask(taskElementToUndo){
+    const activeMenu = document.querySelector(".activemenu");
+
+    const oldTaskObject = getTaskObjectFromLocalStorage(taskElementToUndo.dataset.menutitle, taskElementToUndo.dataset.title);
+    const newTaskObject = getTaskObjectFromLocalStorage(taskElementToUndo.dataset.menutitle, taskElementToUndo.dataset.title);
+
+    newTaskObject.completeddate = "";
+    newTaskObject.menuTitle = newTaskObject.originalMenuTitle;
+
+    removeTaskInLocalStorage(oldTaskObject.title, oldTaskObject.menuTitle);
+    addTaskToLocalStorage(newTaskObject);
     changeMenu(activeMenu);
 }
 

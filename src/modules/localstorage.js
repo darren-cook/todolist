@@ -125,13 +125,6 @@ function removeTaskInLocalStorage(taskTitleToDelete, menuTitleOfTask){
     })
     menuToEdit.listOfTasks = newlistOfTasks;
 
-    const allTasksMenu = userDataList[0]
-    const allTasksListOfTasks = allTasksMenu.listOfTasks;
-    const newlistOfAllTasks = allTasksListOfTasks.filter(function( obj ) {
-        return obj.taskTitle !== taskTitleToDelete;
-    })
-    allTasksMenu.listOfTasks = newlistOfAllTasks;
-
     localStorage.setItem("userData",JSON.stringify(userDataList));
 }
 
