@@ -252,6 +252,13 @@
     cursor: pointer;
  }
 
+ #menuerror {
+    font-size: 10px;
+    font-family: 'Roboto', sans-serif; 
+    color: red;
+    overflow-x: visible;
+}
+
 .menuitem {
     padding: 10px;
     background-color: ivory;
