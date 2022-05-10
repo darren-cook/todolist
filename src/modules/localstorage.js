@@ -85,6 +85,19 @@ function getListOfMenuTitles(){
     return listOfMenuTitles;
 }
 
+function checkUniqueMenuTitle(menuTitleToCheck){
+    const listOfMenuTitles = getListOfMenuTitles();
+    listOfMenuTitles.unshift("General Tasks");
+    listOfMenuTitles.unshift("Completed Tasks");
+    listOfMenuTitles.unshift("All Tasks");
+    
+    if(listOfMenuTitles.indexOf(menuTitleToCheck) === -1){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function addTaskToLocalStorage(taskObjectToAdd){
     const dataToAppend = {taskTitle:taskObjectToAdd.title, taskObject:taskObjectToAdd};
 
@@ -202,5 +215,5 @@ function editTaskInLocalStorage(oldTaskObject, newTaskObject){
 
 }
 
-export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, 
+export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
     addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage }

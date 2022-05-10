@@ -1,6 +1,6 @@
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
 import { changeBody } from "./body";
-import { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage } from "./localstorage";
+import { addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, checkUniqueMenuTitle } from "./localstorage";
 
 function changeMenu(newMenuElement){
     const oldMenuElement = document.querySelector(".activemenu");
@@ -63,9 +63,6 @@ function createMenu() {
     const newMenuTitle = document.querySelector("#menuformtitle");
     newMenuTitle.focus();
 
-    // const createMenuButton = document.querySelector("#createmenubutton");
-    // createMenuButton.classList.add("hidden")
-
     const menuFormDelete = document.querySelector("#newmenuformdelete");
     const menuFormSubmit = document.querySelector("#newmenuformsubmit");
 
@@ -81,18 +78,22 @@ function validateMenu(){
     const menuFormTitle = document.querySelector("#menuformtitle");
 
     if (menuFormTitle.checkValidity()===true) {
-        const newMenuObject = menuFactory(menuFormTitle.value);
-        const newMenuElement = generateMenuElement(newMenuObject);
-
-        const menuItems = document.querySelector("#menuitems");
-        const menuForm = document.querySelector("#menuform");
-        menuItems.insertBefore(newMenuElement, menuForm);
-
-        resetMenu();
-        addMenuToLocalStorage(newMenuObject);
-        changeMenu(newMenuElement);
+        if(checkUniqueMenuTitle(menuFormTitle.value)){
+            const newMenuObject = menuFactory(menuFormTitle.value);
+            const newMenuElement = generateMenuElement(newMenuObject);
+    
+            const menuItems = document.querySelector("#menuitems");
+            const menuForm = document.querySelector("#menuform");
+            menuItems.insertBefore(newMenuElement, menuForm);
+    
+            resetMenu();
+            addMenuToLocalStorage(newMenuObject);
+            changeMenu(newMenuElement);
+        } else {
+            menuErrorMessage("*Please enter a unique name")
+        }
     } else {
-        menuFormTitle.focus();
+        menuErrorMessage("*Required");
     }
 }
 
@@ -190,6 +191,25 @@ function validateMenuEdit(oldMenuTitle, newMenuTitle, menuElementToEdit){
     } else {
         menuFormInput.focus();
     }
+}
+
+function menuErrorMessage(errorMessage){
+    const menuForm = document.getElementById("menuform");
+    const menuTitle = document.getElementById("menuformtitle");
+    const menuItems = document.getElementById("menuitems");
+
+    const oldMenuError = document.getElementById("menuerror");
+    if (oldMenuError != null){
+        oldMenuError.remove()
+    }
+
+    const menuError = document.createElement("p");
+    menuError.setAttribute("id","menuerror")
+    menuError.innerText = errorMessage;
+
+    menuForm.appendChild(menuError)
+    menuItems.scrollTop = menuItems.scrollHeight;
+    menuTitle.focus();
 }
 
 function verifyMenuDelete(menuElementToDelete) {
