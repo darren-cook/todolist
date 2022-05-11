@@ -89,4 +89,33 @@ function removeVerifyWindow(){
     verifyWindow.remove();
 }
 
-export { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow }
+function changeSortDirection(sortButtonElement){
+    const oldSortDirection = sortButtonElement.dataset.direction;
+    const oldSortedElement = document.querySelector(".sorted");
+
+    if(oldSortDirection==("none")){
+        sortButtonElement.dataset.direction = "ascending";
+        sortButtonElement.setAttribute("src","./images/sort-reverse-variant.png");
+        sortButtonElement.setAttribute("alt","Sort Titles Ascending");
+        sortButtonElement.classList.add("sorted");
+    } else if(oldSortDirection=="ascending") {
+        sortButtonElement.dataset.direction = "descending";
+        sortButtonElement.setAttribute("src","./images/sort-variant.png");
+        sortButtonElement.setAttribute("alt","Sort Titles Descending");
+    } else {
+        sortButtonElement.dataset.direction = "ascending";
+        sortButtonElement.setAttribute("src","./images/sort-reverse-variant.png");
+        sortButtonElement.setAttribute("alt","Sort Titles Ascending");
+    }
+
+    if(oldSortedElement!=null){
+        if(oldSortedElement!=sortButtonElement){
+            oldSortedElement.dataset.direction = "none";
+            oldSortedElement.setAttribute("src","./images/sort.png");
+            oldSortedElement.setAttribute("alt","Sort Titles Ascending");
+            oldSortedElement.classList.remove("sorted");
+        }
+    }
+}
+
+export { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow, changeSortDirection }

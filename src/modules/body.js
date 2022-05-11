@@ -1,5 +1,6 @@
 import { createTask } from "./task";
 import { loadTasksFromLocalStorage } from "./localstorage"
+import { changeSortDirection } from "./displaycontroller"
 
 function changeBody(newBodyTitle){
     const oldBodyElement = document.querySelector(".activebody");
@@ -45,21 +46,61 @@ function generateCompletedTaskBox(bodyTitle){
     taskColumns.classList.add("taskcolumns");
 
     const priorityColumn = document.createElement("div");
-    priorityColumn.textContent = "Priority";
     priorityColumn.classList.add("taskcolumn","justifycenter");
+    const priorityColumnSort = document.createElement("img");
+    priorityColumnSort.setAttribute("id","priorityColumnSort");
+    priorityColumnSort.dataset.direction = "none";
+    priorityColumnSort.setAttribute("src","./images/sort.png");
+    priorityColumnSort.setAttribute("alt","Sort Titles Ascending");
+    priorityColumnSort.classList.add("sortbutton");
+    priorityColumnSort.addEventListener("click",function(){
+        changeSortDirection(priorityColumnSort);
+    })
+    const priorityColumnTitle = document.createElement("div");
+    priorityColumnTitle.textContent = "Priority";
+    priorityColumn.appendChild(priorityColumnSort);
+    priorityColumn.appendChild(priorityColumnTitle);
     taskColumns.appendChild(priorityColumn);
+
     const titleColumn = document.createElement("div");
-    titleColumn.textContent = "Title";
     titleColumn.classList.add("taskcolumn","justifystart");
+    const titleColumnSort = document.createElement("img");
+    titleColumnSort.setAttribute("id","titleColumnSort");
+    titleColumnSort.dataset.direction = "none";
+    titleColumnSort.setAttribute("src","./images/sort.png");
+    titleColumnSort.setAttribute("alt","Sort Titles Ascending");
+    titleColumnSort.classList.add("sortbutton");
+    titleColumnSort.addEventListener("click",function(){
+        changeSortDirection(titleColumnSort);
+    })
+    const titleColumnTitle = document.createElement("div");
+    titleColumnTitle.textContent = "Title";
+    titleColumn.appendChild(titleColumnSort);
+    titleColumn.appendChild(titleColumnTitle)
     taskColumns.appendChild(titleColumn);
+
     const menuTitleColumn = document.createElement("div");
     menuTitleColumn.textContent = "Task List";
     menuTitleColumn.classList.add("taskcolumn","justifystart");
     taskColumns.appendChild(menuTitleColumn);
+
     const completedDateColumn = document.createElement("div");
-    completedDateColumn.textContent = "Completed";
     completedDateColumn.classList.add("taskcolumn","justifycenter");
+    const completedDateColumnSort = document.createElement("img");
+    completedDateColumnSort.setAttribute("id","duedateColumnSort");
+    completedDateColumnSort.dataset.direction = "none";
+    completedDateColumnSort.setAttribute("src","./images/sort.png");
+    completedDateColumnSort.setAttribute("alt","Sort Titles Ascending");
+    completedDateColumnSort.classList.add("sortbutton");
+    completedDateColumnSort.addEventListener("click",function(){
+        changeSortDirection(completedDateColumnSort);
+    })
+    const completedDateTitle = document.createElement("div");
+    completedDateTitle.textContent = "Completed";
+    completedDateColumn.appendChild(completedDateColumnSort);
+    completedDateColumn.appendChild(completedDateTitle);
     taskColumns.appendChild(completedDateColumn);
+
     const actionsColumn = document.createElement("div");
     actionsColumn.textContent = "Actions";
     actionsColumn.classList.add("taskcolumn","justifycenter");
@@ -106,21 +147,61 @@ function generateNormalTaskBox(bodyTitle){
     taskColumns.classList.add("taskcolumns");
 
     const priorityColumn = document.createElement("div");
-    priorityColumn.textContent = "Priority";
     priorityColumn.classList.add("taskcolumn","justifycenter");
+    const priorityColumnSort = document.createElement("img");
+    priorityColumnSort.setAttribute("id","priorityColumnSort");
+    priorityColumnSort.dataset.direction = "none";
+    priorityColumnSort.setAttribute("src","./images/sort.png");
+    priorityColumnSort.setAttribute("alt","Sort Titles Ascending");
+    priorityColumnSort.classList.add("sortbutton");
+    priorityColumnSort.addEventListener("click",function(){
+        changeSortDirection(priorityColumnSort);
+    })
+    const priorityColumnTitle = document.createElement("div");
+    priorityColumnTitle.textContent = "Priority";
+    priorityColumn.appendChild(priorityColumnSort);
+    priorityColumn.appendChild(priorityColumnTitle);
     taskColumns.appendChild(priorityColumn);
+
     const titleColumn = document.createElement("div");
-    titleColumn.textContent = "Title";
     titleColumn.classList.add("taskcolumn","justifystart");
+    const titleColumnSort = document.createElement("img");
+    titleColumnSort.setAttribute("id","titleColumnSort");
+    titleColumnSort.dataset.direction = "none";
+    titleColumnSort.setAttribute("src","./images/sort.png");
+    titleColumnSort.setAttribute("alt","Sort Titles Ascending");
+    titleColumnSort.classList.add("sortbutton");
+    titleColumnSort.addEventListener("click",function(){
+        changeSortDirection(titleColumnSort);
+    })
+    const titleColumnTitle = document.createElement("div");
+    titleColumnTitle.textContent = "Title";
+    titleColumn.appendChild(titleColumnSort);
+    titleColumn.appendChild(titleColumnTitle)
     taskColumns.appendChild(titleColumn);
+
     const menuTitleColumn = document.createElement("div");
     menuTitleColumn.textContent = "Task List";
     menuTitleColumn.classList.add("taskcolumn","justifystart");
     taskColumns.appendChild(menuTitleColumn);
+
     const dueDateColumn = document.createElement("div");
-    dueDateColumn.textContent = "Due Date";
     dueDateColumn.classList.add("taskcolumn","justifycenter");
+    const dueDateColumnSort = document.createElement("img");
+    dueDateColumnSort.setAttribute("id","duedateColumnSort");
+    dueDateColumnSort.dataset.direction = "none";
+    dueDateColumnSort.setAttribute("src","./images/sort.png");
+    dueDateColumnSort.setAttribute("alt","Sort Titles Ascending");
+    dueDateColumnSort.classList.add("sortbutton");
+    dueDateColumnSort.addEventListener("click",function(){
+        changeSortDirection(dueDateColumnSort);
+    })
+    const dueDateColumnTitle = document.createElement("div");
+    dueDateColumnTitle.textContent = "Due Date";
+    dueDateColumn.appendChild(dueDateColumnSort);
+    dueDateColumn.appendChild(dueDateColumnTitle);
     taskColumns.appendChild(dueDateColumn);
+
     const actionsColumn = document.createElement("div");
     actionsColumn.textContent = "Actions";
     actionsColumn.classList.add("taskcolumn","justifycenter");
