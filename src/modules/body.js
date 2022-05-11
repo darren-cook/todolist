@@ -1,5 +1,5 @@
 import { createTask } from "./task";
-import { loadTasksFromLocalStorage } from "./localstorage"
+import { loadTasksFromLocalStorage, sortTitles } from "./localstorage"
 import { changeSortDirection } from "./displaycontroller"
 
 function changeBody(newBodyTitle){
@@ -72,6 +72,7 @@ function generateCompletedTaskBox(bodyTitle){
     titleColumnSort.classList.add("sortbutton");
     titleColumnSort.addEventListener("click",function(){
         changeSortDirection(titleColumnSort);
+        sortTitles(bodyTitle, titleColumnSort.dataset.direction);
     })
     const titleColumnTitle = document.createElement("div");
     titleColumnTitle.textContent = "Title";
@@ -173,6 +174,7 @@ function generateNormalTaskBox(bodyTitle){
     titleColumnSort.classList.add("sortbutton");
     titleColumnSort.addEventListener("click",function(){
         changeSortDirection(titleColumnSort);
+        sortTitles(bodyTitle, titleColumnSort.dataset.direction);
     })
     const titleColumnTitle = document.createElement("div");
     titleColumnTitle.textContent = "Title";

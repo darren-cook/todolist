@@ -80,7 +80,7 @@ function getListOfMenuTitles(){
     const listOfMenuTitles = [];
 
     for(let i=2; i<userDataList.length; i++){
-        listOfMenuTitles.push(userDataList[i].menuTitle.toLowerCase());
+        listOfMenuTitles.push(userDataList[i].menuTitle);
     }
     return listOfMenuTitles;
 }
@@ -90,8 +90,9 @@ function checkUniqueMenuTitle(menuTitleToCheck){
     listOfMenuTitles.unshift("General Tasks");
     listOfMenuTitles.unshift("Completed Tasks");
     listOfMenuTitles.unshift("All Tasks");
-    
-    if(listOfMenuTitles.indexOf(menuTitleToCheck.toLowerCase()) === -1){
+    const listOfMenuTitlesLowerCase = listOfMenuTitles.map(menuTitle => menuTitle.toLowerCase());
+
+    if(listOfMenuTitlesLowerCase.indexOf(menuTitleToCheck.toLowerCase()) === -1){
         return true;
     } else {
         return false;
@@ -123,6 +124,19 @@ function loadTasksFromLocalStorage(menuTitleToLoad){
     if(listOfTasksToLoad.length > 0){
         for(let i=0; i<listOfTasksToLoad.length; i++){
             const newTaskElement = generateTaskElement(listOfTasksToLoad[i].taskObject);
+            taskList.appendChild(newTaskElement);
+        }
+    }
+}
+
+function loadTasksFromSortedList(sortedListOfTasks){
+    const taskList = document.querySelector(".tasklist");
+    if(sortedListOfTasks.length > 0){
+        while(taskList.firstChild){
+            taskList.removeChild(taskList.firstChild);
+        }
+        for(let i=0; i<sortedListOfTasks.length; i++){
+            const newTaskElement = generateTaskElement(sortedListOfTasks[i].taskObject);
             taskList.appendChild(newTaskElement);
         }
     }
@@ -215,7 +229,7 @@ function editTaskInLocalStorage(oldTaskObject, newTaskObject){
 
 }
 
-function getListOfTaskTitles(){
+function getListOfAllTaskTitles(){
     const userDataList = JSON.parse(localStorage.getItem("userData"));
 
     const listOfTaskTitles = [];
@@ -233,7 +247,7 @@ function getListOfTaskTitles(){
 }
 
 function checkUniqueTaskTitle(taskTitleToCheck){
-    const listOfTaskTitles = getListOfTaskTitles();
+    const listOfTaskTitles = getListOfAllTaskTitles();
     
     if(listOfTaskTitles.indexOf(taskTitleToCheck.toLowerCase()) === -1){
         return true;
@@ -242,5 +256,42 @@ function checkUniqueTaskTitle(taskTitleToCheck){
     }
 }
 
+function sortTitles(menuTitleToSort, sortDirection){
+    const userDataList = JSON.parse(localStorage.getItem("userData"));
+
+    const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToSort);
+    const listOfTasksToLoad = menuToLoad.listOfTasks;
+
+    let sortedListOfTasks = []
+
+    if(sortDirection=="ascending"){
+        sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b) {
+            const titleA = a.taskTitle.toLowerCase();
+            const titleB = b.taskTitle.toLowerCase();
+            if(titleA < titleB){
+                return -1
+            } else if(titleA > titleB){
+                return 1
+            } else {
+                return 0
+            }
+        })
+    } else {
+        sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b) {
+            const titleA = a.taskTitle.toLowerCase();
+            const titleB = b.taskTitle.toLowerCase();
+            if(titleA < titleB){
+                return 1
+            } else if(titleA > titleB){
+                return -1
+            } else {
+                return 0
+            }
+        })
+    }
+    loadTasksFromSortedList(sortedListOfTasks)
+}
+
 export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
-    addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle }
+    addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle,
+    sortTitles }

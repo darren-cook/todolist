@@ -36,6 +36,7 @@ function createTaskForm(bodyTitle){
     taskFormTitle.setAttribute("name","taskformtitle");
     taskFormTitle.setAttribute("id","taskformtitle");
     taskFormTitle.setAttribute("maxlength","64");
+    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]*")
     taskFormTitle.required = true;
     taskFormTitle.setAttribute("placeholder","New Task Name")
     taskForm.appendChild(taskFormTitle);
@@ -118,6 +119,7 @@ function createTaskEditForm(priority, title, menuTitle, rawduedate){
     taskFormTitle.setAttribute("name","taskformtitle");
     taskFormTitle.setAttribute("id","taskformtitle");
     taskFormTitle.setAttribute("maxlength","64");
+    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]*")
     taskFormTitle.required = true;
     taskFormTitle.value = title;
     taskForm.appendChild(taskFormTitle);
@@ -205,7 +207,11 @@ function validateTask(bodyTitle){
             taskErrorMessage("*Please enter a unique name");
         }
     } else {
-        taskErrorMessage("*Required");
+        if(taskFormTitle.value==""){
+            taskErrorMessage("*Required");
+        } else {
+            taskErrorMessage("*Special charcaters not allowed");
+        }
     }
 }
 
@@ -433,20 +439,28 @@ function createTaskEdit(taskElementToEdit){
 }
 
 function validateTaskEdit(oldTaskObject, taskElementToEdit){
-    const taskFormInput = document.querySelector("#taskformtitle");
+    const taskFormTitle = document.querySelector("#taskformtitle");
 
-    if (taskFormInput.checkValidity()===true) {
-        const activeMenu = document.querySelector(".activemenu");
-        const newTaskObject = taskFactory();
-        const newTaskElement = generateTaskElement(newTaskObject);
-        const taskList = document.querySelector(".tasklist");
-        taskList.insertBefore(newTaskElement, taskElementToEdit);
-        taskElementToEdit.remove();
-        resetTask();
-        editTaskInLocalStorage(oldTaskObject, newTaskObject);
-        changeMenu(activeMenu);
+    if(taskFormTitle.checkValidity()===true){
+        if(checkUniqueTaskTitle(taskFormTitle.value)){
+            const activeMenu = document.querySelector(".activemenu");
+            const newTaskObject = taskFactory();
+            const newTaskElement = generateTaskElement(newTaskObject);
+            const taskList = document.querySelector(".tasklist");
+            taskList.insertBefore(newTaskElement, taskElementToEdit);
+            taskElementToEdit.remove();
+            resetTask();
+            editTaskInLocalStorage(oldTaskObject, newTaskObject);
+            changeMenu(activeMenu);
+        } else {
+            taskErrorMessage("*Please enter a unique name")
+        }
     } else {
-        taskFormInput.focus();
+        if(taskFormTitle.value==""){
+            taskErrorMessage("*Required")
+        } else {
+            taskErrorMessage("*Special characters not allowed")
+        }
     }
 }
 
