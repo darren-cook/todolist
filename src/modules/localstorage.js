@@ -80,7 +80,7 @@ function getListOfMenuTitles(){
     const listOfMenuTitles = [];
 
     for(let i=2; i<userDataList.length; i++){
-        listOfMenuTitles.push(userDataList[i].menuTitle);
+        listOfMenuTitles.push(userDataList[i].menuTitle.toLowerCase());
     }
     return listOfMenuTitles;
 }
@@ -91,7 +91,7 @@ function checkUniqueMenuTitle(menuTitleToCheck){
     listOfMenuTitles.unshift("Completed Tasks");
     listOfMenuTitles.unshift("All Tasks");
     
-    if(listOfMenuTitles.indexOf(menuTitleToCheck) === -1){
+    if(listOfMenuTitles.indexOf(menuTitleToCheck.toLowerCase()) === -1){
         return true;
     } else {
         return false;
@@ -215,5 +215,32 @@ function editTaskInLocalStorage(oldTaskObject, newTaskObject){
 
 }
 
+function getListOfTaskTitles(){
+    const userDataList = JSON.parse(localStorage.getItem("userData"));
+
+    const listOfTaskTitles = [];
+
+    const allTasksTaskList = userDataList[0].listOfTasks;
+    const completedTasksTaskList = userDataList[1].listOfTasks;
+
+    for(let i=0; i<allTasksTaskList.length; i++){
+        listOfTaskTitles.push(allTasksTaskList[i].taskTitle.toLowerCase());
+    }
+    for(let i=0; i<completedTasksTaskList.length; i++){
+        listOfTaskTitles.push(completedTasksTaskList[i].taskTitle.toLowerCase());
+    }
+    return listOfTaskTitles;
+}
+
+function checkUniqueTaskTitle(taskTitleToCheck){
+    const listOfTaskTitles = getListOfTaskTitles();
+    
+    if(listOfTaskTitles.indexOf(taskTitleToCheck.toLowerCase()) === -1){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
-    addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage }
+    addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle }

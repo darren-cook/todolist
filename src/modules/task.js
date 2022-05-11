@@ -1,7 +1,6 @@
 import { format, parseISO } from "date-fns";
 import { disableDisableables, enableDisableables, displayVerifyWindow, removeVerifyWindow } from "./displaycontroller";
-import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage } from "./localstorage";
-import { changeBody } from "./body";
+import { getListOfMenuTitles, addTaskToLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle } from "./localstorage";
 import { changeMenu } from "./menu";
 
 function createTaskForm(bodyTitle){
@@ -189,20 +188,24 @@ function validateTask(bodyTitle){
     const taskFormTitle = document.querySelector("#taskformtitle");
 
     if (taskFormTitle.checkValidity()===true) {
-        const activeMenu = document.querySelector(".activemenu");
-        const newTaskObject = taskFactory();
-        if(bodyTitle==newTaskObject.menuTitle){
-            const newTaskElement = generateTaskElement(newTaskObject);
-
-            const taskList = document.querySelector(".tasklist");
-            const taskForm = document.querySelector("#taskform");
-            taskList.insertBefore(newTaskElement, taskForm);
+        if(checkUniqueTaskTitle(taskFormTitle.value)){
+            const activeMenu = document.querySelector(".activemenu");
+            const newTaskObject = taskFactory();
+            if(bodyTitle==newTaskObject.menuTitle){
+                const newTaskElement = generateTaskElement(newTaskObject);
+    
+                const taskList = document.querySelector(".tasklist");
+                const taskForm = document.querySelector("#taskform");
+                taskList.insertBefore(newTaskElement, taskForm);
+            }
+            resetTask();
+            addTaskToLocalStorage(newTaskObject);
+            changeMenu(activeMenu);
+        } else {
+            taskErrorMessage("*Please enter a unique name");
         }
-        resetTask();
-        addTaskToLocalStorage(newTaskObject);
-        changeMenu(activeMenu);
     } else {
-        taskFormTitle.focus();
+        taskErrorMessage("*Required");
     }
 }
 
@@ -375,6 +378,25 @@ function verifyTaskDelete(taskElementToDelete){
         deleteTask(taskElementToDelete);
         removeVerifyWindow();
     })
+}
+
+function taskErrorMessage(errorMessage){
+    const taskForm = document.getElementById("taskform");
+    const taskTitle = document.getElementById("taskformtitle");
+    const taskList = document.querySelector(".tasklist");
+
+    const oldTaskError = document.getElementById("taskerror");
+    if (oldTaskError != null){
+        oldTaskError.remove()
+    }
+
+    const taskError = document.createElement("p");
+    taskError.setAttribute("id","taskerror")
+    taskError.innerText = errorMessage;
+
+    taskForm.appendChild(taskError);
+    taskList.scrollTop = taskList.scrollHeight;
+    taskTitle.focus();
 }
 
 function deleteTask(taskElementToDelete){

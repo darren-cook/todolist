@@ -179,17 +179,21 @@ function validateMenuEdit(oldMenuTitle, newMenuTitle, menuElementToEdit){
     const menuFormInput = document.querySelector("#menuformtitle");
 
     if (menuFormInput.checkValidity()===true) {
-        editMenuInLocalStorage(oldMenuTitle, newMenuTitle);
+        if(checkUniqueMenuTitle(menuFormInput.value)){
+            editMenuInLocalStorage(oldMenuTitle, newMenuTitle);
 
-        const newMenuObject = menuFactory(menuFormInput.value);
-        const newMenuElement = generateMenuElement(newMenuObject);
-        const menuItems = document.querySelector("#menuitems");
-        menuItems.insertBefore(newMenuElement, menuElementToEdit);
-        changeMenu(newMenuElement)
-        menuElementToEdit.remove();
-        resetMenu();
+            const newMenuObject = menuFactory(menuFormInput.value);
+            const newMenuElement = generateMenuElement(newMenuObject);
+            const menuItems = document.querySelector("#menuitems");
+            menuItems.insertBefore(newMenuElement, menuElementToEdit);
+            changeMenu(newMenuElement)
+            menuElementToEdit.remove();
+            resetMenu();
+        } else {
+            menuErrorMessage("*Please enter a unique name.")
+        }
     } else {
-        menuFormInput.focus();
+        menuErrorMessage("*Required");
     }
 }
 
