@@ -92,6 +92,11 @@
 
 .taskcolumn {
     align-self: center;
+    display: flex;
+}
+
+.sortbutton {
+    cursor: pointer;
 }
 
 .justifycenter {
