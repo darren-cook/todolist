@@ -1,4 +1,5 @@
 import { menuFactory, generateMenuElement } from "./menu";
+import { compareAsc, parseISO } from "date-fns";
 import { generateTaskElement} from "./task";
 
 function checkLocalStorage(){
@@ -262,36 +263,49 @@ function sortTitles(menuTitleToSort, sortDirection){
     const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToSort);
     const listOfTasksToLoad = menuToLoad.listOfTasks;
 
-    let sortedListOfTasks = []
+    const sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b){
+        const titleA = a.taskTitle.toLowerCase();
+        const titleB = b.taskTitle.toLowerCase();
 
-    if(sortDirection=="ascending"){
-        sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b) {
-            const titleA = a.taskTitle.toLowerCase();
-            const titleB = b.taskTitle.toLowerCase();
+        if(sortDirection=="ascending"){
             if(titleA < titleB){
-                return -1
-            } else if(titleA > titleB){
-                return 1
-            } else {
-                return 0
+                return -1;
             }
-        })
-    } else {
-        sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b) {
-            const titleA = a.taskTitle.toLowerCase();
-            const titleB = b.taskTitle.toLowerCase();
+            if(titleA > titleB){
+                return 1;
+            }
+            return 0;
+        } else {
             if(titleA < titleB){
-                return 1
-            } else if(titleA > titleB){
-                return -1
-            } else {
-                return 0
+                return 1;
             }
-        })
-    }
+            if(titleA > titleB){
+                return -1;
+            }
+            return 0;
+        }
+    })
+    loadTasksFromSortedList(sortedListOfTasks)
+}
+
+function sortDates(menuTitleToSort, sortDirection){
+    const userDataList = JSON.parse(localStorage.getItem("userData"));
+
+    const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToSort);
+    const listOfTasksToLoad = menuToLoad.listOfTasks;
+
+    const sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b){
+        const dateA = new Date(a.taskObject.rawduedate);
+        const dateB = new Date(b.taskObject.rawduedate);
+        if(sortDirection=="ascending"){
+            return compareAsc(dateA, dateB);
+        } else {
+            return compareAsc(dateB, dateA);
+        }
+    })
     loadTasksFromSortedList(sortedListOfTasks)
 }
 
 export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
     addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle,
-    sortTitles }
+    sortTitles, sortDates }

@@ -1,5 +1,5 @@
 import { createTask } from "./task";
-import { loadTasksFromLocalStorage, sortTitles } from "./localstorage"
+import { loadTasksFromLocalStorage, sortTitles, sortDates } from "./localstorage"
 import { changeSortDirection } from "./displaycontroller"
 
 function changeBody(newBodyTitle){
@@ -95,6 +95,7 @@ function generateCompletedTaskBox(bodyTitle){
     completedDateColumnSort.classList.add("sortbutton");
     completedDateColumnSort.addEventListener("click",function(){
         changeSortDirection(completedDateColumnSort);
+        sortDates(bodyTitle, dueDateColumnSort.dataset.direction);
     })
     const completedDateTitle = document.createElement("div");
     completedDateTitle.textContent = "Completed";
@@ -197,6 +198,7 @@ function generateNormalTaskBox(bodyTitle){
     dueDateColumnSort.classList.add("sortbutton");
     dueDateColumnSort.addEventListener("click",function(){
         changeSortDirection(dueDateColumnSort);
+        sortDates(bodyTitle, dueDateColumnSort.dataset.direction);
     })
     const dueDateColumnTitle = document.createElement("div");
     dueDateColumnTitle.textContent = "Due Date";
