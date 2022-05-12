@@ -295,8 +295,16 @@ function sortDates(menuTitleToSort, sortDirection){
     const listOfTasksToLoad = menuToLoad.listOfTasks;
 
     const sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b){
-        const dateA = new Date(a.taskObject.rawduedate);
-        const dateB = new Date(b.taskObject.rawduedate);
+        let dateA;
+        let dateB;
+
+        if(menuTitleToSort!="Completed Tasks"){
+            dateA = new Date(a.taskObject.rawduedate);
+            dateB = new Date(b.taskObject.rawduedate);
+        } else {
+            dateA = new Date(a.taskObject.rawcompletedate);
+            dateB = new Date(b.taskObject.rawcompletedate);
+        }
         if(sortDirection=="ascending"){
             return compareAsc(dateA, dateB);
         } else {
@@ -305,6 +313,7 @@ function sortDates(menuTitleToSort, sortDirection){
     })
     loadTasksFromSortedList(sortedListOfTasks)
 }
+
 
 export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
     addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle,

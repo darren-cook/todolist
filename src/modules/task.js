@@ -480,6 +480,7 @@ function completeTask(taskElementToComplete){
 
     const formattedCurrentDate = `${currentDateMonth} ${currentDateDay}, ${currentDateYear}`
     newTaskObject.completeddate = formattedCurrentDate;
+    newTaskObject.rawcompletedate = currentDate;
 
     editTaskInLocalStorage(oldTaskObject, newTaskObject);
     removeTaskInLocalStorage(oldTaskObject.title, "All Tasks")

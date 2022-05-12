@@ -95,7 +95,7 @@ function generateCompletedTaskBox(bodyTitle){
     completedDateColumnSort.classList.add("sortbutton");
     completedDateColumnSort.addEventListener("click",function(){
         changeSortDirection(completedDateColumnSort);
-        sortDates(bodyTitle, dueDateColumnSort.dataset.direction);
+        sortDates(bodyTitle, completedDateColumn.dataset.direction);
     })
     const completedDateTitle = document.createElement("div");
     completedDateTitle.textContent = "Completed";
