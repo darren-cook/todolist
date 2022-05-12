@@ -294,7 +294,7 @@ function sortDates(menuTitleToSort, sortDirection){
     const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToSort);
     const listOfTasksToLoad = menuToLoad.listOfTasks;
 
-    const sortedListOfTasks = listOfTasksToLoad.slice().sort(function(a, b){
+    const sortedListOfDates = listOfTasksToLoad.slice().sort(function(a, b){
         let dateA;
         let dateB;
 
@@ -311,10 +311,58 @@ function sortDates(menuTitleToSort, sortDirection){
             return compareAsc(dateB, dateA);
         }
     })
-    loadTasksFromSortedList(sortedListOfTasks)
+    loadTasksFromSortedList(sortedListOfDates);
+}
+
+function sortPriority(menuTitleToSort, sortDirection){
+    const userDataList = JSON.parse(localStorage.getItem("userData"));
+
+    const menuToLoad = userDataList.find(arrayofMenuObjects => arrayofMenuObjects.menuTitle==menuTitleToSort);
+    const listOfTasksToLoad = menuToLoad.listOfTasks;
+
+    const sortedListOfPriorities = listOfTasksToLoad.slice().sort(function(a, b){
+        const priorityA = a.taskObject.priority;
+        const priorityB = b.taskObject.priority;
+        let priorityAValue;
+        let priorityBValue;
+        switch(priorityA){
+            case "":
+                priorityAValue = 0
+                break;
+            case "Low":
+                priorityAValue = 1
+                break;
+            case "Medium":
+                priorityAValue = 2
+                break;
+            case "High":
+                priorityAValue = 3
+                break;
+        }
+        switch(priorityB){
+            case "":
+                priorityBValue = 0
+                break;
+            case "Low":
+                priorityBValue = 1
+                break;
+            case "Medium":
+                priorityBValue = 2
+                break;
+            case "High":
+                priorityBValue = 3
+                break;
+        }
+        if(sortDirection==="ascending"){
+            return priorityAValue-priorityBValue;
+        } else {
+            return priorityBValue-priorityAValue
+        }
+    })
+    loadTasksFromSortedList(sortedListOfPriorities);
 }
 
 
 export { checkLocalStorage, addMenuToLocalStorage, editMenuInLocalStorage, removeMenuInLocalStorage, getListOfMenuTitles, checkUniqueMenuTitle, 
     addTaskToLocalStorage, loadTasksFromLocalStorage, removeTaskInLocalStorage, getTaskObjectFromLocalStorage, editTaskInLocalStorage, checkUniqueTaskTitle,
-    sortTitles, sortDates }
+    sortTitles, sortDates, sortPriority }
