@@ -36,7 +36,7 @@ function createTaskForm(bodyTitle){
     taskFormTitle.setAttribute("name","taskformtitle");
     taskFormTitle.setAttribute("id","taskformtitle");
     taskFormTitle.setAttribute("maxlength","64");
-    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]*")
+    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]+[a-zA-Z0-9 ]+")
     taskFormTitle.required = true;
     taskFormTitle.setAttribute("placeholder","New Task Name")
     taskForm.appendChild(taskFormTitle);
@@ -119,7 +119,7 @@ function createTaskEditForm(priority, title, menuTitle, rawduedate){
     taskFormTitle.setAttribute("name","taskformtitle");
     taskFormTitle.setAttribute("id","taskformtitle");
     taskFormTitle.setAttribute("maxlength","64");
-    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]*")
+    taskFormTitle.setAttribute("pattern","[a-zA-Z0-9]+[a-zA-Z0-9 ]+")
     taskFormTitle.required = true;
     taskFormTitle.value = title;
     taskForm.appendChild(taskFormTitle);
@@ -442,7 +442,7 @@ function validateTaskEdit(oldTaskObject, taskElementToEdit){
     const taskFormTitle = document.querySelector("#taskformtitle");
 
     if(taskFormTitle.checkValidity()===true){
-        if(checkUniqueTaskTitle(taskFormTitle.value)){
+        if(checkUniqueTaskTitle(taskFormTitle.value, oldTaskObject.title)){
             const activeMenu = document.querySelector(".activemenu");
             const newTaskObject = taskFactory();
             const newTaskElement = generateTaskElement(newTaskObject);

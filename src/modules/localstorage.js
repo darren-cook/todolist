@@ -247,8 +247,12 @@ function getListOfAllTaskTitles(){
     return listOfTaskTitles;
 }
 
-function checkUniqueTaskTitle(taskTitleToCheck){
+function checkUniqueTaskTitle(taskTitleToCheck, taskTitleToEdit=null){
     const listOfTaskTitles = getListOfAllTaskTitles();
+
+    if(taskTitleToCheck==taskTitleToEdit){
+        return true;
+    }
     
     if(listOfTaskTitles.indexOf(taskTitleToCheck.toLowerCase()) === -1){
         return true;

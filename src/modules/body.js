@@ -52,7 +52,7 @@ function generateCompletedTaskBox(bodyTitle){
     priorityColumnSort.dataset.direction = "none";
     priorityColumnSort.setAttribute("src","./images/sort.png");
     priorityColumnSort.setAttribute("alt","Sort Titles Ascending");
-    priorityColumnSort.classList.add("sortbutton");
+    priorityColumnSort.classList.add("sortbutton", "disableable");
     priorityColumnSort.addEventListener("click",function(){
         changeSortDirection(priorityColumnSort);
         sortPriority(bodyTitle, priorityColumnSort.dataset.direction);
@@ -70,7 +70,7 @@ function generateCompletedTaskBox(bodyTitle){
     titleColumnSort.dataset.direction = "none";
     titleColumnSort.setAttribute("src","./images/sort.png");
     titleColumnSort.setAttribute("alt","Sort Titles Ascending");
-    titleColumnSort.classList.add("sortbutton");
+    titleColumnSort.classList.add("sortbutton", "disableable");
     titleColumnSort.addEventListener("click",function(){
         changeSortDirection(titleColumnSort);
         sortTitles(bodyTitle, titleColumnSort.dataset.direction);
@@ -93,7 +93,7 @@ function generateCompletedTaskBox(bodyTitle){
     completedDateColumnSort.dataset.direction = "none";
     completedDateColumnSort.setAttribute("src","./images/sort.png");
     completedDateColumnSort.setAttribute("alt","Sort Titles Ascending");
-    completedDateColumnSort.classList.add("sortbutton");
+    completedDateColumnSort.classList.add("sortbutton", "disableable");
     completedDateColumnSort.addEventListener("click",function(){
         changeSortDirection(completedDateColumnSort);
         sortDates(bodyTitle, completedDateColumn.dataset.direction);
@@ -156,7 +156,7 @@ function generateNormalTaskBox(bodyTitle){
     priorityColumnSort.dataset.direction = "none";
     priorityColumnSort.setAttribute("src","./images/sort.png");
     priorityColumnSort.setAttribute("alt","Sort Titles Ascending");
-    priorityColumnSort.classList.add("sortbutton");
+    priorityColumnSort.classList.add("sortbutton", "disableable");
     priorityColumnSort.addEventListener("click",function(){
         changeSortDirection(priorityColumnSort);
         sortPriority(bodyTitle, priorityColumnSort.dataset.direction);
@@ -174,7 +174,7 @@ function generateNormalTaskBox(bodyTitle){
     titleColumnSort.dataset.direction = "none";
     titleColumnSort.setAttribute("src","./images/sort.png");
     titleColumnSort.setAttribute("alt","Sort Titles Ascending");
-    titleColumnSort.classList.add("sortbutton");
+    titleColumnSort.classList.add("sortbutton", "disableable");
     titleColumnSort.addEventListener("click",function(){
         changeSortDirection(titleColumnSort);
         sortTitles(bodyTitle, titleColumnSort.dataset.direction);
@@ -197,7 +197,7 @@ function generateNormalTaskBox(bodyTitle){
     dueDateColumnSort.dataset.direction = "none";
     dueDateColumnSort.setAttribute("src","./images/sort.png");
     dueDateColumnSort.setAttribute("alt","Sort Titles Ascending");
-    dueDateColumnSort.classList.add("sortbutton");
+    dueDateColumnSort.classList.add("sortbutton", "disableable");
     dueDateColumnSort.addEventListener("click",function(){
         changeSortDirection(dueDateColumnSort);
         sortDates(bodyTitle, dueDateColumnSort.dataset.direction);
